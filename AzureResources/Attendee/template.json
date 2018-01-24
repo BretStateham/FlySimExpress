@@ -1,0 +1,420 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name_prefix": {
+            "defaultValue": "name",
+            "type": "string"
+        }
+    },
+    "variables": {
+        "location": "westus",
+        "iotHub_name": "[concat(parameters('name_prefix'),'iot')]",
+        "consumptionPlan_name": "WestUSPlan",
+        "functionApp_name": "[concat(parameters('name_prefix'),'functions')]",
+        "enNamespace_name": "[concat(parameters('name_prefix'),'ns')]",
+        "web_name": "web",
+        "storage_name": "[concat(parameters('name_prefix'),'storage')]",
+        "eventHub_name": "flysim",
+        "consumerGroup_name": "$Default",
+        "rootManageSharedAccessKey_name": "RootManageSharedAccessKey",
+        "functionApp_webSite_Name": "[concat(parameters('name_prefix'),'functions.azurewebsites.net')]",
+        "publishingUser_name": "[concat('$',parameters('name_prefix'),'functions')]"
+      },
+    "resources": [
+        {
+            "comments": "Provision the IoT Hub",
+            "type": "Microsoft.Devices/IotHubs",
+            "sku": {
+                "name": "S1",
+                "tier": "Standard",
+                "capacity": 1
+            },
+            "name": "[variables('iotHub_name')]",
+            "apiVersion": "2016-02-03",
+            "location": "westus",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "operationsMonitoringProperties": {
+                    "events": {
+                        "None": "None",
+                        "Connections": "None",
+                        "DeviceTelemetry": "None",
+                        "C2DCommands": "None",
+                        "DeviceIdentityOperations": "None",
+                        "FileUploadOperations": "None",
+                        "Routes": "None"
+                    }
+                },
+                "ipFilterRules": [],
+                "eventHubEndpoints": {
+                    "events": {
+                        "retentionTimeInDays": 1,
+                        "partitionCount": 4,
+                        "partitionIds": [
+                            "0",
+                            "1",
+                            "2",
+                            "3"
+                        ],
+                        "path": "[variables('iotHub_name')]",
+                        "endpoint": "[concat('sb://iothub-ns-', variables('iotHub_name'),'.servicebus.windows.net/')]"
+                    },
+                    "operationsMonitoringEvents": {
+                        "retentionTimeInDays": 1,
+                        "partitionCount": 4,
+                        "partitionIds": [
+                            "0",
+                            "1",
+                            "2",
+                            "3"
+                        ],
+                        "path": "[concat(variables('iotHub_name'),'-operationmonitoring')]",
+                        "endpoint": "[concat('sb://iothub-ns-', variables('iotHub_name'),'.servicebus.windows.net/')]"
+                    }
+                },
+                "routing": {
+                    "endpoints": {
+                        "serviceBusQueues": [],
+                        "serviceBusTopics": [],
+                        "eventHubs": []
+                    },
+                    "routes": [],
+                    "fallbackRoute": {
+                        "name": "$fallback",
+                        "source": "DeviceMessages",
+                        "condition": "true",
+                        "endpointNames": [
+                            "events"
+                        ],
+                        "isEnabled": true
+                    }
+                },
+                "storageEndpoints": {
+                    "$default": {
+                        "sasTtlAsIso8601": "PT1H",
+                        "connectionString": "",
+                        "containerName": ""
+                    }
+                },
+                "enableFileUploadNotifications": false,
+                "cloudToDevice": {
+                    "maxDeliveryCount": 10,
+                    "defaultTtlAsIso8601": "PT1H",
+                    "feedback": {
+                        "lockDurationAsIso8601": "PT1M",
+                        "ttlAsIso8601": "PT1H",
+                        "maxDeliveryCount": 10
+                    }
+                },
+                "features": "None"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Provision the Event Hub Namespace",
+            "type": "Microsoft.EventHub/namespaces",
+            "sku": {
+                "name": "Standard",
+                "tier": "Standard",
+                "capacity": 1
+            },
+            "name": "[variables('enNamespace_name')]",
+            "apiVersion": "2017-04-01",
+            "location": "[variables('location')]",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "isAutoInflateEnabled": true,
+                "maximumThroughputUnits": 20,
+                "provisioningState": "Succeeded",
+                "metricId": "[concat(subscription().subscriptionId, ':', variables('enNamespace_name'))]",
+                "serviceBusEndpoint": "[concat('https://', variables('enNamespace_name'),'.servicebus.windows.net:443/')]"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Provision the Storage Account",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[variables('storage_name')]",
+            "apiVersion": "2017-06-01",
+            "location": "westus",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "supportsHttpsTrafficOnly": false,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Provision the consumption plan",
+            "type": "Microsoft.Web/serverfarms",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "name": "[variables('consumptionPlan_name')]",
+            "apiVersion": "2016-09-01",
+            "location": "[variables('location')]",
+            "scale": null,
+            "properties": {
+                "name": "[variables('consumptionPlan_name')]",
+                "workerTierName": null,
+                "adminSiteName": null,
+                "hostingEnvironmentProfile": null,
+                "perSiteScaling": false,
+                "reserved": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Provision the Function App",
+            "type": "Microsoft.Web/sites",
+            "kind": "functionapp",
+            "name": "[variables('functionApp_name')]",
+            "apiVersion": "2016-08-01",
+            "location": "[variables('location')]",
+            "scale": null,
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(variables('functionApp_name'),'.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "virtualIP": null,
+                        "thumbprint": null,
+                        "toUpdate": null,
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(variables('functionApp_name'),'.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "virtualIP": null,
+                        "thumbprint": null,
+                        "toUpdate": null,
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('consumptionPlan_name'))]",
+                "reserved": false,
+                "siteConfig": null,
+                "scmSiteAlsoStopped": false,
+                "hostingEnvironmentProfile": null,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "cloningInfo": null
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('consumptionPlan_name'))]"
+            ]
+        },
+        {
+            "comments": "Provision the Event Hub Access Keys",
+            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+            "name": "[concat(variables('enNamespace_name'), '/', variables('rootManageSharedAccessKey_name'))]",
+            "apiVersion": "2017-04-01",
+            "location": "[variables('location')]",
+            "scale": null,
+            "properties": {
+                "rights": [
+                    "Listen",
+                    "Manage",
+                    "Send"
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', variables('enNamespace_name'))]"
+            ]
+        },
+        {
+            "comments": "Provision the flysim Event Hub",
+            "type": "Microsoft.EventHub/namespaces/eventhubs",
+            "name": "[concat(variables('enNamespace_name'), '/', variables('eventHub_name'))]",
+            "apiVersion": "2017-04-01",
+            "location": "[variables('location')]",
+            "scale": null,
+            "properties": {
+                "messageRetentionInDays": 1,
+                "partitionCount": 2,
+                "status": "Active",
+                "partitionIds": [
+                    "0",
+                    "1"
+                ]
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', variables('enNamespace_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/ed2f73c5-c021-4b86-9afb-aa7998d16085/resourcegroups/atcsbssgroup/providers/Microsoft.EventHub/namespaces/atcsbssns/eventhubs/flysim/consumergroups/$Default'.",
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "name": "[concat(variables('enNamespace_name'), '/', variables('eventHub_name'), '/', variables('consumerGroup_name'))]",
+            "apiVersion": "2017-04-01",
+            "location": "[variables('location')]",
+            "scale": null,
+            "properties": {
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', variables('enNamespace_name'))]",
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('enNamespace_name'), variables('eventHub_name'))]"
+            ]
+        },
+        {
+            "comments": "Provision the Function App Web Config",
+            "type": "Microsoft.Web/sites/config",
+            "name": "[concat(variables('functionApp_name'), '/', variables('web_name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "[variables('location')]",
+            "scale": null,
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "phpVersion": "5.6",
+                "pythonVersion": "",
+                "nodeVersion": "",
+                "linuxFxVersion": "",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": null,
+                "httpLoggingEnabled": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "[variables('publishingUser_name')",
+                "publishingPassword": null,
+                "appSettings": null,
+                "metadata": null,
+                "connectionStrings": null,
+                "machineKey": null,
+                "handlerMappings": null,
+                "documentRoot": null,
+                "scmType": "LocalGit",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "javaVersion": null,
+                "javaContainer": null,
+                "javaContainerVersion": null,
+                "appCommandLine": "",
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false,
+                        "virtualDirectories": null
+                    }
+                ],
+                "winAuthAdminState": 0,
+                "winAuthTenantState": 0,
+                "customAppPoolIdentityAdminState": false,
+                "customAppPoolIdentityTenantState": false,
+                "runtimeADUser": null,
+                "runtimeADUserPassword": null,
+                "loadBalancing": "LeastRequests",
+                "routingRules": [],
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "limits": null,
+                "autoHealEnabled": false,
+                "autoHealRules": null,
+                "tracingOptions": null,
+                "vnetName": "",
+                "siteAuthEnabled": false,
+                "siteAuthSettings": {
+                    "enabled": null,
+                    "unauthenticatedClientAction": null,
+                    "tokenStoreEnabled": null,
+                    "allowedExternalRedirectUrls": null,
+                    "defaultProvider": null,
+                    "clientId": null,
+                    "clientSecret": null,
+                    "issuer": null,
+                    "allowedAudiences": null,
+                    "additionalLoginParams": null,
+                    "isAadAutoProvisioned": false,
+                    "googleClientId": null,
+                    "googleClientSecret": null,
+                    "googleOAuthScopes": null,
+                    "facebookAppId": null,
+                    "facebookAppSecret": null,
+                    "facebookOAuthScopes": null,
+                    "twitterConsumerKey": null,
+                    "twitterConsumerSecret": null,
+                    "microsoftAccountClientId": null,
+                    "microsoftAccountClientSecret": null,
+                    "microsoftAccountOAuthScopes": null
+                },
+                "cors": {
+                    "allowedOrigins": [
+                        "https://functions.azure.com",
+                        "https://functions-staging.azure.com",
+                        "https://functions-next.azure.com"
+                    ]
+                },
+                "push": null,
+                "apiDefinition": null,
+                "autoSwapSlotName": null,
+                "localMySqlEnabled": false,
+                "managedServiceIdentityId": null,
+                "ipSecurityRestrictions": null
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', variables('functionApp_name'))]"
+            ]
+        },
+        {
+            "comments": "Provision the Function App Host Name",
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "name": "[concat(variables('functionApp_name'), '/', variables('functionApp_webSite_Name'))]",
+            "apiVersion": "2016-08-01",
+            "location": "[variables('location')]",
+            "scale": null,
+            "properties": {
+                "siteName": "[variables('functionApp_name')]",
+                "domainId": null,
+                "hostNameType": "Verified"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', variables('functionApp_name'))]"
+            ]
+        }
+    ]
+}

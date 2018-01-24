@@ -1,0 +1,7 @@
+{
+  "name": "devfestfunctionsjs",
+  "version": "1.0.0",
+  "dependencies": {
+    "azure-storage": "^2.0.0"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "WEBSITE_SLOT_NAME": "Production",
+    "FUNCTIONS_EXTENSION_VERSION": "~1",
+    "ScmType": "None",
+    "WEBSITE_AUTH_ENABLED": "False",
+    "IoTHubConnection": "Endpoint=sb://iothub-ns-devfestiot-311729-931d6c13ee.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=RdncO053/Nf4knVh+9M5sKQUyA2Zs85lir20MVX6BvY=;EntityPath=devfestiot",
+    "AzureWebJobsDashboard": "DefaultEndpointsProtocol=https;AccountName=devfeststorage;AccountKey=6Nby7u04CJ6nCKjrJuOc+GFZMkNj3r1IDRct8vlQjMgIENZwDvKdMw95iEz57bICn8hkXdkRXwiOYfPkvXoSDg==",
+    "WEBSITE_NODE_DEFAULT_VERSION": "6.5.0",
+    "SharedEventHubConnection": "Endpoint=sb://devfestns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=vwFORUifA/q5dX20RPPNpZAlD7ym3pmt5lZaaLHRcC4=;EntityPath=flysim-shared-input-hub",
+    "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "DefaultEndpointsProtocol=https;AccountName=devfeststorage;AccountKey=6Nby7u04CJ6nCKjrJuOc+GFZMkNj3r1IDRct8vlQjMgIENZwDvKdMw95iEz57bICn8hkXdkRXwiOYfPkvXoSDg==",
+    "WEBSITE_CONTENTSHARE": "devfestfunctionsjs9d1d",
+    "EventHubConnection": "Endpoint=sb://devfestns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=vwFORUifA/q5dX20RPPNpZAlD7ym3pmt5lZaaLHRcC4=;EntityPath=flysim",
+    "WEBSITE_SITE_NAME": "devfestfunctionsjs",
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=devfeststorage;AccountKey=6Nby7u04CJ6nCKjrJuOc+GFZMkNj3r1IDRct8vlQjMgIENZwDvKdMw95iEz57bICn8hkXdkRXwiOYfPkvXoSDg=="
+  }
+}
