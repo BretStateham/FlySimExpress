@@ -56,6 +56,10 @@ In order to successfully complete this workshop as an attendee, you will need:
     - A Windows 10 Professional or better computer
     - [Visual Studio 2017 Community Edition](https://www.visualstudio.com/vs/community/) (FREE) or better with the Windows Development Toosl feature installed.
 
+- An WiFi network that just needs an SSID and Password (no itermediate sign in web page) with all protocols open.  Or if not all protocols need the network needs to at a minimum support inbound and outbound ports for HTTP (80), HTTPS (443), AMQP (5671,5672), and MQTT (8883).
+
+  > **Note**: "***Why no intermediate sign in web page***" you ask?  Well because there is no way for the MXChip board to present the Web UI for you to authenticate it.  You can only give the board standard wifi login credentials (SSID/PWD(PSK)).  Yes, you may be able to connect your COMPUTER to a gated wifi connection where you have a browser to complete the login process, but you can't connect the board to one because the board has no browser, screen, keyboard, mouse, etc.
+
 - An active Azure Subscription that you are willing to use for the resources you will create during the event.  If you delete the resources as instructed at the end of the event, the total cost for the resources shouldn't be more than a few US dolalrs.
 
   If you don't have an active Azure Subscription, or don't want charges billed to your existing subscription, you can create a free trial at [http://azure.com/free](http://azure.com/free). If you have created a free trial previously, you will need to create a new one using a different email address.  The recommended steps for creating a free trial for the event are:
@@ -78,8 +82,8 @@ There are a few labs you need to go through to complete the workshop. They are:
 
 - **[01 - Prepare the Azure IoT Development Kit Board](./flysimexpress-01.md)**
 
-- **[02 - Deploy and Verify Your Resources to Azure](./flysimexpress-01.md)**
+- **[02 - Deploy and Verify Your Resources to Azure](./flysimexpress-02.md)**
 
-- **[03 - Deploy the Code to the Development Board](./flysimexpress-01.md)**
+- **[03 - Deploy the Code to the Development Board](./flysimexpress-03.md)**
 
-- **[04 - Fly your "Plane"](./flysimexpress-01.md)**
+- **[04 - Fly your "Plane"](./flysimexpress-04.md)**
