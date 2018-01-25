@@ -1,156 +1,250 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name_prefix": {
-            "defaultValue": "name",
-            "type": "string"
-        }
-    },
-    "variables": {
-        "location": "westus",
-        "eventHubNamespaceName": "[concat(parameters('name_prefix'),'ns')]",
-        "storageAccountName": "[concat(parameters('name_prefix'),'storage')]",
-        "flySimSharedInputHubName": "flysim-shared-input-hub",
-        "flySimSharedOutputHubName": "flysim-shared-output-hub",
-        "defaultConsumerGroupName": "$Default",
-        "rootManageSharedAccessKeyName": "RootManageSharedAccessKey",
-    },
-    "resources": [
-        {
-            "comments": "Provision the Storage Account",
-            "type": "Microsoft.Storage/storageAccounts",
-            "sku": {
-                "name": "Standard_LRS",
-                "tier": "Standard"
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name_prefix": {
+      "defaultValue": "name",
+      "type": "string"
+    }
+  },
+  "variables": {
+    "location": "westus",
+    "eventHubNamespaceName": "[concat(parameters('name_prefix'),'ns')]",
+    "eventHubApiVersion": "2017-04-01",
+    "storageAccountName": "[concat(parameters('name_prefix'),'storage')]",
+    "flySimSharedInputHubName": "flysim-shared-input-hub",
+    "flySimSharedOutputHubName": "flysim-shared-output-hub",
+    "defaultConsumerGroupName": "$Default",
+    "rootManageSharedAccessKeyName": "RootManageSharedAccessKey",
+    "streamAnalyticsJobName": "[concat(parameters('name_prefix'),'job')]",
+    "authRuleResourceId":"[resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubNamespaceName'), variables('rootManageSharedAccessKeyName'))]"
+  },
+  "resources": [
+    {
+      "comments": "Provision the Storage Account",
+      "type": "Microsoft.Storage/storageAccounts",
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "kind": "Storage",
+      "name": "[variables('storageAccountName')]",
+      "apiVersion": "2017-06-01",
+      "location": "[variables('location')]",
+      "tags": {},
+      "scale": null,
+      "properties": {
+        "supportsHttpsTrafficOnly": false,
+        "encryption": {
+          "services": {
+            "file": {
+              "enabled": true
             },
-            "kind": "Storage",
-            "name": "[variables('storageAccountName')]",
-            "apiVersion": "2017-06-01",
-            "location": "[variables('location')]",
-            "tags": {},
-            "scale": null,
+            "blob": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        }
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "Provision the Event Hub Namespace",
+      "type": "Microsoft.EventHub/namespaces",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard",
+        "capacity": 1
+      },
+      "name": "[variables('eventHubNamespaceName')]",
+      "apiVersion": "2017-04-01",
+      "location": "[variables('location')]",
+      "tags": {},
+      "scale": null,
+      "properties": {
+        "isAutoInflateEnabled": true,
+        "maximumThroughputUnits": 20,
+        "provisioningState": "Succeeded",
+        "metricId": "[concat(subscription().subscriptionId, ':', variables('eventHubNamespaceName'))]",
+        "serviceBusEndpoint": "[concat('https://', variables('eventHubNamespaceName'),'.servicebus.windows.net:443/')]"
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "Provision the Event Hub Namespace Authorization Rules",
+      "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+      "name": "[concat(variables('eventHubNamespaceName'), '/', variables('rootManageSharedAccessKeyName'))]",
+      "apiVersion": "2017-04-01",
+      "location": "[variables('location')]",
+      "scale": null,
+      "properties": {
+        "rights": [
+          "Listen",
+          "Manage",
+          "Send"
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]"
+      ]
+    },
+    {
+      "comments": "Provision the flysim-shared-input-hub",
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "name": "[concat(variables('eventHubNamespaceName'), '/', variables('flySimSharedInputHubName'))]",
+      "apiVersion": "2017-04-01",
+      "location": "[variables('location')]",
+      "scale": null,
+      "properties": {
+        "messageRetentionInDays": 1,
+        "partitionCount": 2,
+        "status": "Active",
+        "partitionIds": [
+          "0",
+          "1"
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]"
+      ]
+    },
+    {
+      "comments": "Provision the flysim-shared-input-hub $Default consumer group",
+      "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+      "name": "[concat(variables('eventHubNamespaceName'), '/', variables('flySimSharedInputHubName'), '/', variables('defaultConsumerGroupName'))]",
+      "apiVersion": "2017-04-01",
+      "location": "[variables('location')]",
+      "scale": null,
+      "properties": {},
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]",
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubNamespaceName'), variables('flySimSharedInputHubName'))]"
+      ]
+    },
+    {
+      "comments": "Provision the flysim-shared-output-hub",
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "name": "[concat(variables('eventHubNamespaceName'), '/', variables('flySimSharedOutputHubName'))]",
+      "apiVersion": "2017-04-01",
+      "location": "[variables('location')]",
+      "scale": null,
+      "properties": {
+        "messageRetentionInDays": 1,
+        "partitionCount": 2,
+        "status": "Active",
+        "partitionIds": [
+          "0",
+          "1"
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]"
+      ]
+    },
+    {
+      "comments": "Provision the flysim-shared-output-hub $Default consumer group",
+      "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+      "name": "[concat(variables('eventHubNamespaceName'), '/', variables('flySimSharedOutputHubName'), '/', variables('defaultConsumerGroupName'))]",
+      "apiVersion": "2017-04-01",
+      "location": "[variables('location')]",
+      "scale": null,
+      "properties": {},
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]",
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubNamespaceName'), variables('flySimSharedOutputHubName'))]"
+      ]
+    },
+    {
+      "comments": "Provision the Stream Analytics Job",
+      "apiVersion": "2016-03-01",
+      "name": "[variables('streamAnalyticsJobName')]",
+      "location": "[variables('location')]",
+      "type": "Microsoft.StreamAnalytics/StreamingJobs",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubNamespaceName'), variables('flySimSharedInputHubName'))]",
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubNamespaceName'), variables('flySimSharedOutputHubName'))]"
+      ],
+      "properties": {
+        "sku": {
+          "name": "standard"
+        },
+        "outputErrorPolicy": "Drop",
+        "outputStartMode": "JobStartTime",
+        "eventsOutOfOrderPolicy": "adjust",
+        "eventsOutOfOrderMaxDelayInSeconds": 0,
+        "eventsLateArrivalMaxDelayInSeconds": 5,
+        "dataLocale": "en-US",
+        "inputs": [
+          {
+            "name": "FlightDataInput",
+            "type": "Microsoft.StreamAnalytics/streamingjobs/inputs",
             "properties": {
-                "supportsHttpsTrafficOnly": false,
-                "encryption": {
-                    "services": {
-                        "file": {
-                            "enabled": true
-                        },
-                        "blob": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
+              "type": "Stream",
+              "datasource": {
+                "type": "Microsoft.ServiceBus/EventHub",
+                "properties": {
+                  "eventHubName": "flysim-shared-input-hub",
+                  "serviceBusNamespace": "[variables('eventHubNamespaceName')]",
+                  "sharedAccessPolicyName": "[variables('rootManageSharedAccessKeyName')]",
+                  "sharedAccessPolicyKey": "[listkeys(variables('authRuleResourceId'), variables('eventHubApiVersion')).primaryKey]"
                 }
-            },
-            "dependsOn": []
+              },
+              "compression": {
+                "type": "None"
+              },
+              "serialization": {
+                "type": "Json",
+                "properties": {
+                  "encoding": "UTF8"
+                }
+              }
+            }
+          }
+        ],
+        "transformation": {
+          "name": "Transformation",
+          "properties": {
+            "streamingUnits": 1,
+            "query": "WITH Results AS\r\n  (\r\n    SELECT System.Timestamp as endtime,\r\n      F1.deviceId AS plane1, F2.deviceId AS plane2,\r\n      SQRT(SQUARE((F2.latitude - F1.latitude) * 364320) + SQUARE((F2.longitude - F1.longitude) * 364320) + SQUARE(F2.altitude - F1.altitude)) as distance,\r\n      COUNT(*)\r\n    FROM FlightDataInput F1 TIMESTAMP BY timestamp\r\n    JOIN FlightDataInput F2 TIMESTAMP BY timestamp\r\n    ON DATEDIFF(second, F1, F2) BETWEEN 0 and 2\r\n    AND SQRT(SQUARE((F2.latitude - F1.latitude) * 364320) + SQUARE((F2.longitude - F1.longitude) * 364320) + SQUARE(F2.altitude - F1.altitude)) < 21120\r\n    WHERE F1.deviceId != F2.deviceId\r\n    GROUP BY F1.deviceId, F1.latitude, F1.longitude, F1.altitude,\r\n      F2.deviceId, F2.latitude, F2.longitude, F2.altitude,\r\n      TumblingWindow(second,2)\r\n  )\r\nSELECT plane1, plane2, distance INTO FlightDataOutput FROM Results"          
+          }
         },
-        {
-            "comments": "Provision the Event Hub Namespace",
-            "type": "Microsoft.EventHub/namespaces",
-            "sku": {
-                "name": "Standard",
-                "tier": "Standard",
-                "capacity": 1
-            },
-            "name": "[variables('eventHubNamespaceName')]",
-            "apiVersion": "2017-04-01",
-            "location": "[variables('location')]",
-            "tags": {},
-            "scale": null,
+        "outputs": [
+          {
+            "name": "FlightDataOutput",
+            "type": "Microsoft.StreamAnalytics/streamingjobs/outputs",
             "properties": {
-                "isAutoInflateEnabled": true,
-                "maximumThroughputUnits": 20,
-                "provisioningState": "Succeeded",
-                "metricId": "[concat(subscription().subscriptionId, ':', variables('eventHubNamespaceName'))]",
-                "serviceBusEndpoint": "[concat('https://', variables('eventHubNamespaceName'),'.servicebus.windows.net:443/')]"
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Provision the Event Hub Namespace Authorization Rules",
-            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
-            "name": "[concat(variables('eventHubNamespaceName'), '/', variables('rootManageSharedAccessKeyName'))]",
-            "apiVersion": "2017-04-01",
-            "location": "[variables('location')]",
-            "scale": null,
-            "properties": {
-                "rights": [
-                    "Listen",
-                    "Manage",
-                    "Send"
-                ]
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]"
-            ]
-        },
-        {
-            "comments": "Provision the flysim-shared-input-hub",
-            "type": "Microsoft.EventHub/namespaces/eventhubs",
-            "name": "[concat(variables('eventHubNamespaceName'), '/', variables('flySimSharedInputHubName'))]",
-            "apiVersion": "2017-04-01",
-            "location": "[variables('location')]",
-            "scale": null,
-            "properties": {
-                "messageRetentionInDays": 1,
-                "partitionCount": 2,
-                "status": "Active",
-                "partitionIds": [
-                    "0",
-                    "1"
-                ]
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]"
-            ]
-        },
-        {
-            "comments": "Provision the flysim-shared-input-hub $Default consumer group",
-            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
-            "name": "[concat(variables('eventHubNamespaceName'), '/', variables('flySimSharedInputHubName'), '/', variables('defaultConsumerGroupName_1'))]",
-            "apiVersion": "2017-04-01",
-            "location": "[variables('location')]",
-            "scale": null,
-            "properties": {},
-            "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]",
-                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubNamespaceName'), variables('flySimSharedInputHubName'))]"
-            ]
-        },
-        {
-            "comments": "Provision the flysim-shared-output-hub",
-            "type": "Microsoft.EventHub/namespaces/eventhubs",
-            "name": "[concat(variables('eventHubNamespaceName'), '/', variables('flySimSharedOutputHubName'))]",
-            "apiVersion": "2017-04-01",
-            "location": "[variables('location')]",
-            "scale": null,
-            "properties": {
-                "messageRetentionInDays": 1,
-                "partitionCount": 2,
-                "status": "Active",
-                "partitionIds": [
-                    "0",
-                    "1"
-                ]
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]"
-            ]
-        },
-        {
-            "comments": "Provision the flysim-shared-output-hub $Default consumer group",
-            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
-            "name": "[concat(variables('eventHubNamespaceName'), '/', variables('flySimSharedOutputHubName'), '/', variables('defaultConsumerGroupName_2'))]",
-            "apiVersion": "2017-04-01",
-            "location": "[variables('location')]",
-            "scale": null,
-            "properties": {},
-            "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]",
-                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubNamespaceName'), variables('flySimSharedOutputHubName'))]"
-            ]
-        }
-    ]
+              "datasource": {
+                "type": "Microsoft.ServiceBus/EventHub",
+                "properties": {
+                  "eventHubName": "flysim-shared-output-hub",
+                  "serviceBusNamespace": "[variables('eventHubNamespaceName')]",
+                  "sharedAccessPolicyName": "[variables('rootManageSharedAccessKeyName')]",
+                  "sharedAccessPolicyKey": "[listkeys(variables('authRuleResourceId'), variables('eventHubApiVersion')).primaryKey]"
+                }
+              },
+              "serialization": {
+                "type": "Json",
+                "properties": {
+                  "encoding": "UTF8",
+                  "format": "LineSeparated"
+                }
+              },
+              "etag": "22e948f5-cda4-4dc2-b48e-b99c8411d6a6"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs":{  
+    "NamespaceConnectionString":{  
+       "type":"string",
+       "value":"[listkeys(variables('authRuleResourceId'), variables('eventHubApiVersion')).primaryConnectionString]"
+    },
+    "SharedAccessPolicyPrimaryKey":{  
+       "type":"string",
+       "value":"[listkeys(variables('authRuleResourceId'), variables('eventHubApiVersion')).primaryKey]"
+    }
+ }
 }
