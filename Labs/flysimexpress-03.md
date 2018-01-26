@@ -228,4 +228,4 @@ Great, so we've deployed our function to Azure, we've talked about what it does,
 
     ![Function Integrations in the Portal](images/functionintegrationsinportal.png)
     
-1. Feel free to checkout the other files in the project.  When you are ready, go ahead on to lab [04 - Deploy The Code to your Device and "Fly"](flysimexpress-04.md)
+1. Feel free to checkout the other files in the project.  When you are ready, go ahead on to lab [04 - Deploy The Code to your Device and "Fly"](./flysimexpress-04.md)

@@ -98,7 +98,6 @@ For those completing the workshop with macOS, you can ignore this section.  Howe
      / ____ \  / /| |_| | | |  __/
     /_/    \_\/___|\__,_|_|  \___|
 
-
     Welcome to the cool new Azure CLI!
 
     Here are the base commands:
@@ -360,4 +359,4 @@ Awesome, at this point you've used the Azure CLI and an ARM Template to deploy a
 
     ![View the list of resources in the resource group](images/resourcegroupresources.png)
 
-1. Awesome.  We'll be back to the portal to interact with these resources later, but for now, go ahead and move on to lab "[03 - Deploy Your Function Code to Azure](flysimexpress-02.md)"
+1. Awesome.  We'll be back to the portal to interact with these resources later, but for now, go ahead and move on to lab "[03 - Deploy Your Function Code to Azure](./flysimexpress-03.md)"
