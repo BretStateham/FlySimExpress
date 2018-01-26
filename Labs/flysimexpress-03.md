@@ -59,6 +59,14 @@ Before we can deploy code to Azure, we need to know how to Authenticate with cre
 
 1. In the output from the previous statement, locate the **`"publishingUserName"`** value and see if you recognize it, and can recall the password for it.
 
+    ```bash
+    {
+      ...
+      "publishingUserName": "flysimjqd",
+      ...
+    }    
+    ```
+
 1. If you have not configured, or do not recall the deployment credentials for your subscription, you can configure them using the following command, passing in your own values for the **&lt;UserName&gt;** and **&lt;UserName&gt;** place holders.  ***IF THIS IS NOT YOUR SUBSCRIPTION, OR YOU HAVE OTHER PROCESSES THAT DEPEND ON THE DEPLOYMENT CREDENTIALS, DO NOT CHANGE THEM***:
 
     ```bash
@@ -69,6 +77,7 @@ Before we can deploy code to Azure, we need to know how to Authenticate with cre
 
     ```bash
     az functionapp deployment user set --user-name flysimjqd --password P@ssw0rd
+    ```
 
 1. The output from the previous command should confirm that the user name was set.  The password will NOT be shown however:
 
@@ -124,6 +133,18 @@ Now that we have a git repository configured inside the Azure Function app, we a
     git init
     ```
 
+1. Stage all of the files currently in the folder with:
+
+    ```bash
+    git add .
+    ```
+
+1. Then commit the changes to the repo on your laptop:
+
+    ```bash
+    git commit -m "Ready to deploy to Azure"
+    ```
+
 1. Next, we'll add the git repo we created inside the Azure Function App previously as the "origin" for the repo on your computer.  Replace the ***&lt;url&gt;*** with the url you copied a couple of steps ago:
 
     ```bash
@@ -143,6 +164,11 @@ Now that we have a git repository configured inside the Azure Function app, we a
     ```bash
     git push -u origin master
     ```
+
+1. If prompted, enter the deployment credentials you verified above:
+
+    ![git Authentication](images/gitauth.png)
+
 
 1. The commmand will take some time to complete, but you can watch its progress in the command prompt:
 

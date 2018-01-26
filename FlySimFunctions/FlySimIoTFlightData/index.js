@@ -135,7 +135,8 @@ module.exports = function (context, inputMessage) {
         last.humidity = inputMessage.humidity;
 
         // Write the message to your Event Hub so it can be viewed by the FlySim desktop app
-        context.bindings.outputMessage = last;
+        // Not used in the Express version of the Workshop
+        // context.bindings.outputMessage = last;
 
         // Write the message to the Shared Event Hub so it can be viewed by the AirTrafficSim desktop app
         context.bindings.sharedOutputMessage = last;

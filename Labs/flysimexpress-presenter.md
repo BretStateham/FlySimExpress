@@ -122,7 +122,7 @@ This lab will be pretty sparsely documented for now.  For more details on naming
 
 If you want plane metadata (name, direction) to be visible when you are zoomed out further, you can modify line 165 in the "`MainViewModel.cs`" file. Change the "90" to a larger value if you want to see metadata when you are zoomed out more. 
 
-    ```c#
-    plane.ZoomDeepLevel = (value < 90) ? Visibility.Visible : Visibility.Collapsed;
-    ```
+  ```c#
+  plane.ZoomDeepLevel = (value < 90) ? Visibility.Visible : Visibility.Collapsed;
+  ```
 

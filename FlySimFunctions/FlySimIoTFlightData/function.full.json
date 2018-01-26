@@ -1,0 +1,28 @@
+{
+  "bindings": [
+    {
+      "type": "eventHub",
+      "name": "outputMessage",
+      "connection": "EventHubConnection",
+      "path": "flysim",
+      "direction": "out"
+    },
+    {
+      "type": "eventHub",
+      "name": "sharedOutputMessage",
+      "connection": "SharedEventHubConnection",
+      "path": "flysim-shared-input-hub",
+      "direction": "out"
+    },
+    {
+      "type": "eventHubTrigger",
+      "name": "inputMessage",
+      "connection": "IoTHubConnection",
+      "path": "devfestiot",
+      "consumerGroup": "$Default",
+      "cardinality": "one",
+      "direction": "in"
+    }
+  ],
+  "disabled": false
+}
