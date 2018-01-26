@@ -24,3 +24,16 @@ In order to successfully complete this workshop as an attendee, you will need:
     1. Go to http://outlook.com and create a new somename@outlook.com account
     1. Still in the same private browser session, navigate to http://azure.com/free and complete the free trial registration using your new outlook.com address, but with your real phone number and credit card for verification purposes.
 
+## For the ambitious only...
+
+You will additionally need some other tools that are installed by the DevKit package.  However, the instructions for installing them assume you already have the board in hand (we'll have boards at the workshop). 
+
+That said, if you want to complete the portion of that setup that runs on your computer you can:
+
+1. Complete JUST <a href="https://microsoft.github.io/azure-iot-developer-kit/docs/get-started/#step-5-prepare-the-development-environment" target="_blank">Step 5. Prepare the development environment</a> from the developer kit "Get Started" documentation.
+
+1. Make sure to follow the steps for your platform (Windows or macOS)
+
+  ![Platform Selection](Labs/images/step5platformselection.png)
+
+1. Follow the remaining instructions to insatll the DevKit for your platform.
