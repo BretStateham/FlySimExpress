@@ -1,0 +1,148 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name_prefix": {
+      "defaultValue": "name",
+      "type": "string"
+    }
+  },
+  "variables": {
+    "location": "[resourceGroup().location]",
+    "iotHubName": "[concat(parameters('name_prefix'),'iot')]",
+    "storageAccountName": "[concat(parameters('name_prefix'),'storage')]",
+    "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+    "eventHubNamespaceName": "[concat(parameters('name_prefix'),'ns')]",
+    "eventHubSASKeyName": "RootManageSharedAccessKey",
+    "eventHubName": "flysim",
+    "eventHubApiVersion": "2017-04-01",
+    "consumptionPlanName": "[concat(parameters('name_prefix'),'plan')]",
+    "functionAppName": "[concat(parameters('name_prefix'),'functions')]"
+  },
+  "resources": [
+    {
+      "comments": "Provision the IoT Hub",
+      "type": "Microsoft.Devices/IotHubs",
+      "apiVersion": "2016-02-03",
+      "name": "[variables('iotHubName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "S1",
+        "tier": "Standard",
+        "capacity": 1
+      },
+      "tags": {},
+      "properties": {},
+      "dependsOn": []
+    },
+    {
+      "comments": "Provision the Storage Account",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2017-06-01",
+      "kind": "Storage",
+      "name": "[variables('storageAccountName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "properties": {},
+      "dependsOn": []
+    },
+    {
+      "comments": "Provision the Event Hub Namespace",
+      "type": "Microsoft.EventHub/namespaces",
+      "apiVersion": "2017-04-01",
+      "name": "[variables('eventHubNamespaceName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard",
+        "capacity": 1
+      },
+      "tags": {},
+      "properties": {},
+      "dependsOn": []
+    },
+    {
+      "comments": "Provision the flysim Event Hub",
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('eventHubNamespaceName'), '/', variables('eventHubName'))]",
+      "location": "[variables('location')]",
+      "properties": {},
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]"
+      ]
+    },
+    {
+      "comments": "Provision the consumption plan",
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2016-09-01",
+      "kind": "functionapp",
+      "name": "[variables('consumptionPlanName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Y1",
+        "tier": "Dynamic",
+        "size": "Y1",
+        "family": "Y",
+        "capacity": 0
+      },
+      "scale": null,
+      "properties": {},
+      "dependsOn": []
+    },
+    {
+      "comments": "Provision the Function App",
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2016-08-01",
+      "kind": "functionapp",
+      "name": "[variables('functionAppName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('consumptionPlanName'))]",
+        "reserved": false,
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "AzureWebJobsDashboard",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTSHARE",
+              "value": "[toLower(variables('functionAppName'))]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~1"
+            },
+            {
+              "name": "IoTHubConnection",
+              "value": "[concat('Endpoint=', reference(resourceId('Microsoft.Devices/IoTHubs', variables('iotHubName'))).eventHubEndpoints.events.endpoint,';SharedAccessKeyName=iothubowner;SharedAccessKey=', listKeys(resourceId('Microsoft.Devices/IotHubs/Iothubkeys', variables('iotHubName'), 'iothubowner'), '2016-02-03').primaryKey,';EntityPath=',reference(resourceId('Microsoft.Devices/IoTHubs', variables('iotHubName'))).eventHubEndpoints.events.path)]"
+            },
+            {
+              "name": "EventHubConnection",
+              "value": "[concat(listkeys(resourceId('Microsoft.Eventhub/namespaces/authorizationRules', variables('eventHubNamespaceName'), variables('eventHubSASKeyName')), variables('eventHubApiVersion')).primaryConnectionString,';EntityPath=',variables('eventHubName'))]"
+            },
+            {
+              "name": "SharedEventHubConnection",
+              "value": "<SHARED EVENT HUB CONNECTIONSTRING AND ENTITY PATH PROVIDED BY THE PRESENTER>"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('consumptionPlanName'))]"
+      ]
+    }
+  ]
+}

@@ -93,6 +93,6 @@ There are a few labs you need to go through to complete the workshop. They are:
 
 - **[02 - Deploy and Verify Your Resources to Azure](./flysimexpress-02.md)**
 
-- **[03 - Deploy the Code to the Development Board](./flysimexpress-03.md)**
+- **[03 - Deploy Your Function Code to Azure](./flysimexpress-03.md)**
 
-- **[04 - Fly your "Plane"](./flysimexpress-04.md)**
+- **[04 - Deploy The Code to your Device and "Fly"](./flysimexpress-04.md)**

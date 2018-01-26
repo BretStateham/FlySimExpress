@@ -10,24 +10,8 @@ az functionapp deployment source config-local-git -g actsbss2group -n actsbss2fu
 
 Copy the git deployment URL from the command above
 
-az storage account show-connection-string -g actsbss2group -n actsbss2storage
-
-Copy the storage account connection string
-
-Get the IoT Hub Event Hub Compatible Endpoint Connection String and Entity EntityPath
-
-Get the Event Hub Namespace RootManageSharedAccessKey connection string and EntityPath=flysim
-
-az functionapp config appsettings set -g actsbss2group -n actsbss2functions --settings "AzureWebJobsStorage=DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=actsbss2storage;AccountKey=I/emegwXt6YbtqPv2C3M0hOhCTkbPe4H61Nd7K8pAlV0Xj9TEIGpBNLa5WXOSmhLMk2LirvnHdBBCWWAtxAHpQ=="
-az functionapp config appsettings set -g actsbss2group -n actsbss2functions --settings "AzureWebJobsDashboard=DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=actsbss2storage;AccountKey=I/emegwXt6YbtqPv2C3M0hOhCTkbPe4H61Nd7K8pAlV0Xj9TEIGpBNLa5WXOSmhLMk2LirvnHdBBCWWAtxAHpQ=="
-az functionapp config appsettings set -g actsbss2group -n actsbss2functions --settings "IoTHubConnection=Endpoint=sb://iothub-ns-actsbss2io-329907-f27038b9a8.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=tLYS2tX4n0GJ+Iypha2vVoHKsrbbm5tcU55sl+hqTRE=;EntityPath=actsbss2iot"
-az functionapp config appsettings set -g actsbss2group -n actsbss2functions --settings "EventHubConnection=Endpoint=sb://actsbss2ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=t5ym7G8Th0nlLrLTLp6b1Gj4crVpwOQ3JWGQFlGwVSw=;EntityPath=flysim"
-az functionapp config appsettings set -g actsbss2group -n actsbss2functions --settings "SharedEventHubConnection=Endpoint=sb://devfestns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=vwFORUifA/q5dX20RPPNpZAlD7ym3pmt5lZaaLHRcC4=;EntityPath=flysim-shared-input-hub"
-
 Change into function folder
 git init 
 git add .
 git commit -m 'Initial Deployment'
-git add remote origin 
-
-
+git add remote origin <paste the git url from above here>

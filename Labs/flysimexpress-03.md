@@ -1,1 +1,1 @@
-# 03 - Deploy the Code to the Development Board
+# 03 - Deploy Your Function Code to Azure
