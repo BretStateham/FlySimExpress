@@ -238,13 +238,29 @@
     }
   ],
   "outputs":{  
-    "NamespaceConnectionString":{  
-       "type":"string",
-       "value":"[listkeys(variables('authRuleResourceId'), variables('eventHubApiVersion')).primaryConnectionString]"
-    },
     "SharedAccessPolicyPrimaryKey":{  
-       "type":"string",
-       "value":"[listkeys(variables('authRuleResourceId'), variables('eventHubApiVersion')).primaryKey]"
+      "type":"string",
+      "value":"[listkeys(variables('authRuleResourceId'), variables('eventHubApiVersion')).primaryKey]"
+    },
+    "NamespaceConnectionString":{  
+      "type":"string",
+      "value":"[listkeys(variables('authRuleResourceId'), variables('eventHubApiVersion')).primaryConnectionString]"
+    },
+    "SharedInputHubName":{
+      "type":"string",
+      "value":"[variables('flySimSharedInputHubName')]"
+    },
+    "SharedInputHubConnectionString":{
+      "type":"string",
+      "value":"[concat(listkeys(variables('authRuleResourceId'), variables('eventHubApiVersion')).primaryConnectionString,';EntityPath=',variables('flySimSharedInputHubName'))]"
+    },
+    "SharedOutputHubName":{
+      "type":"string",
+      "value":"[variables('flySimSharedOutputHubName')]"
+    },
+    "SharedOutputHubConnectionString":{
+      "type":"string",
+      "value":"[concat(listkeys(variables('authRuleResourceId'), variables('eventHubApiVersion')).primaryConnectionString,';EntityPath=',variables('flySimSharedOutputHubName'))]"
     }
- }
+  }
 }

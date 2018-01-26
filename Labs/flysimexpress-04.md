@@ -94,3 +94,12 @@ Now that the code is deployed to your board, you should be able to see messages 
 
     ![Verify IoT Hub Messages](images/verifyiothubmessages.png)
 
+
+1. Next, open the ***&lt;name_prefix&gt;functions*** Function app, click on the "**FlySimIoTData**" function along the left, and then expand the "**Logs**" pane to view the execution logs of the function.  You will see the logged output each time the function is executed because of message being sent by the device to the IoT Hub.
+
+
+    ![Function Log](images/functionlogactivity.png)
+
+1. Lastly, if the Presenter is running the AirTrafficSim app, you can locate your plane's data on it.  As you tilt your board forward/backward and left/right you affect the pitch and roll and therefore it's altitude, heading, latitude, and longitude.  Over time you should see your plane's meta data changing on the AirTrafficSim screen:
+
+    ![Air Traffic Sim](images/planinatc.png)

@@ -302,13 +302,13 @@ Finally, we're ready to deploy our resources to Azure.  As mentioned above we'll
     > **Note**: While the line my appeared wrapped in this document, you need to enter it on a single line in the terminal window.
 
     ```bash
-    az group deployment create --name "FlySimAttendee" --resource-group <name_prefix>group --template-file .\template.json --parameters name_prefix=<name_prefix>
+    az group deployment create --name "FlySimAttendee" --resource-group <name_prefix>group --template-file .\template-express.json --parameters name_prefix=<name_prefix>
     ```
 
     With our ***flysimjqd*** sample prefix:
 
     ```bash
-    az group deployment create --name "FlySimAttendee" --resource-group flysimjqdgroup --template-file .\template.json --parameters name_prefix=flysimjqd
+    az group deployment create --name "FlySimAttendee" --resource-group flysimjqdgroup --template-file .\template-express.json --parameters name_prefix=flysimjqd
     ```
 
 1. The command above will produce a lot of output, just ensure that there are no errors.  Near the end you similar to before you should see a **`"provisioningState": "Succeeded"`**. Verify that everything worked before proceeding.
