@@ -28,12 +28,6 @@ In this lab, we'll use a combination of the Azure CLI and ARM Templates.  Yes, w
 
 If you want a more step-by-step lab experience, you can view the <a href="http://aka.ms/flysim" target="_blank">full version</a> of this workshop at a later time.
 
-## The "myresources.txt" File
-
-Throughout this lab, you will be creating a number of resources. You will need to refer to those resources later in the lab so it is helpful to keep track of all the information you need in a single place. 
-
-To help you do that, a file called `myresources.txt.sample` has been provided in the "Labs" folder whereever you extracted this workshop content to.  You should create a ***copy*** of that file in the same folder, and just name it `myresources.txt`. We'll instruct you periodically to make note of your resources details in that file through this lab.
-
 ___
 <a name="Exercises"></a>
 
@@ -76,31 +70,7 @@ Where:
 
 - Honestly, it doesn't matter what you use as your ***&lt;name_prefix&gt;*** as long as it helps generate globally unique names.  However, for the remainder of this lab, we will assume the naming convention outlined above.  If you use a different name, you will need to keep track of your resource names.
 
-1. Using the information above, choose the ***&lt;name_prefix&gt;*** you wish to use.
-
-1. Open the `Labs/myresources.txt` file (or create a copy of the `Labs/myresources.txt.sample` file and name it `Labs/myresources.txt` if you haven't done so already), and document that name prefix you chose there, and save your changes:
-
-    For example, using our ***&lt;name_prefix&gt;*** of ***flysimjqd*** we could change the following in the `Labs/myresources.txt` file:
-
-    ```text
-    ========================================
-    Name Prefix
-    ========================================
-
-    Document your name prefix here:
-    <paste your Naming convention prefix here>
-    ```
-
-    to
-
-    ```text
-    ========================================
-    Name Prefix
-    ========================================
-
-    Document your name prefix here:
-    flysimjqd
-    ```
+1. Using the information above, choose the ***&lt;name_prefix&gt;*** you wish to use.  Make sure to be consistent in the name you use.  You may want to jot this down so you can remember it later.
 
 ___
 <a name="Exercise3"></a>
@@ -118,7 +88,9 @@ For those completing the workshop with macOS, you can ignore this section.  Howe
     ```bash
     az
     ```
-    You should see output similar to the following abbreviated example.  Take a moment to review the list of commands available. 
+
+    You should see output similar to the following abbreviated example.  Take a moment to review the list of commands available.
+
     ```bash
         /\
        /  \    _____   _ _ __ ___

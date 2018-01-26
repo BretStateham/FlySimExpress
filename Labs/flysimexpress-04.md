@@ -8,57 +8,59 @@ In this exercise, you will compile an embedded C++ app that transmits events to 
 
 1. Open **config.h** and replace YOUR_DISPLAY_NAME with a friendly display name. Then save the file. **This name will be seen by everyone when the ATC app is run in Lab 4**, so please choose a name that's appropriate. Also make it as **unique as possible** by including birth dates (for example, "Amelia Earhart 093059") or other values that are unlikely to be duplicated.
 
-	![Entering a display name]({{"/assets/images/mini-solution/air-traffic-control-simulator/lab1/vs-enter-display-name.png" | absolute_url }})
+	![Entering a display name](images/vs-enter-display-name.png)
 
     _Entering a display name_
  
-1. Press **F1** and type "terminal" into the search box. Then select **Select Default Shell**.
+1. **For those users on Windows**:
 
-	![The VSCode quick start menu has the word 'terminal' entered in it's text box with the selection 'Terminal: Select Default Shell' highlighted.]({{"/assets/images/mini-solution/air-traffic-control-simulator/lab1/select-default-shell-1.png" | absolute_url }})
+    - Press **F1** and type "terminal" into the search box. Then select **Select Default Shell**.
 
-    _Selecting the default shell_
+      ![The VSCode quick start menu has the word 'terminal' entered in it's text box with the selection 'Terminal: Select Default Shell' highlighted.](images/select-default-shell-1.png)
 
-1. Select **PowerShell** from the list of shells to make PowerShell the default shell.
+      _Selecting the default shell_
 
-	![The VSCode quick start menu displays the available terminals to set as default; 'PowerShell' has been highlighted.]({{"/assets/images/mini-solution/air-traffic-control-simulator/lab1/select-default-shell-2.png" | absolute_url }})
+    - Select **PowerShell** from the list of shells to make PowerShell the default shell.
 
-    _Making PowerShell the default shell_
+      ![The VSCode quick start menu displays the available terminals to set as default; 'PowerShell' has been highlighted.](images/select-default-shell-2.png)
+
+        _Making PowerShell the default shell_
 
 1. Select **Run Task** from Visual Studio Code's **Tasks** menu, and then select **cloud-provision** from the drop-down list of tasks. This will begin the process of authorizing your device to access the IoT Hub created in the previous exercise. 
 
-	![The VSCode task selection pane has the 'cloud-provision' task highlighted.]({{"/assets/images/mini-solution/air-traffic-control-simulator/lab1/vs-select-cloud-provision.png" | absolute_url }})
+	![The VSCode task selection pane has the 'cloud-provision' task highlighted.](images/vs-select-cloud-provision.png)
 
     _Starting the cloud-provisioning process_
 
-1. When a "Device Login" screen appears in your browser, copy the login code displayed in Visual Studio Code's Terminal window to the clipboard.
+1. If a "Device Login" screen appears in your browser, copy the login code displayed in Visual Studio Code's Terminal window to the clipboard.
 
-	![A VSCode terminal is displaying a device login code as the result of running the 'cloud-provision' task.]({{"/assets/images/mini-solution/air-traffic-control-simulator/lab1/vs-code-prompt.png" | absolute_url }})
+    ![A VSCode terminal is displaying a device login code as the result of running the 'cloud-provision' task.](images/vs-code-prompt.png)
 
     _Getting the device-login code_
 
-1. Return to the "Device Login" screen in the browser, paste the login code into the input field, and click **Continue**.
+    Return to the "Device Login" screen in the browser, paste the login code into the input field, and click **Continue**.
 
-	![An Azure CLI device login screen with an indication of where to enter a device authorization code.]({{"/assets/images/mini-solution/air-traffic-control-simulator/lab1/portal-enter-device-login.png" | absolute_url }})
+	![An Azure CLI device login screen with an indication of where to enter a device authorization code.](images/portal-enter-device-login.png)
 
     _Logging in to the device_
 	 
-1. Return to the Terminal window in Visual Studio Code and wait for a list of Azure subscriptions to appear. Use the up- and down-arrow keys to select the Azure subscription that you used to provision the Azure IoT Hub in [Exercise 1](#Exercise1). Then press **Enter** to select that subscription.
+1. Return to the Terminal window in Visual Studio Code and wait for a list of Azure subscriptions to appear. Use the up- and down-arrow keys to select the Azure subscription that you used to provision the Azure IoT Hub in previously. Then press **Enter** to select that subscription.
 
-1. When a list of IoT Hubs associated with the subscription appears in the Terminal window, select the IoT Hub that you provisioned in [Exercise 1](#Exercise1).
+1. When a list of IoT Hubs associated with the subscription appears in the Terminal window, select the ***&lt;name_prefix&gt;iot*** hub you provisioned previously.
 
-	![The VSCode terminal windows is displayed, showing an IoT Hub from the user's subscription.]({{"/assets/images/mini-solution/air-traffic-control-simulator/lab1/vs-select-iot-hub.png" | absolute_url }})
+	![The VSCode terminal windows is displayed, showing an IoT Hub from the user's subscription.](images/vs-select-iot-hub.png)
 
     _Selecting an Azure IoT Hub_
 
 1. Wait until the message "Terminal will be reused by tasks, press any key to close it" appears in the Terminal window. This indicates that the cloud-provisioning process completed successfully. Your MXChip IoT DevKit can now authenticate with the IoT Hub and send messages to it securely.
 
-	![The VSCode terminal window is displayed showing the results of running the 'cloud-provision' task.]({{"/assets/images/mini-solution/air-traffic-control-simulator/lab1/vs-completed-provisioning.png" | absolute_url }})
+	![The VSCode terminal window is displayed showing the results of running the 'cloud-provision' task.](images/vs-completed-provisioning.png)
 
     _A successful cloud-provision task_
 
 1. Now it's time to upload code to the device to have it transmit events to the IoT Hub. Select **Tasks** > **Run Task** again, and then select **device-upload**. 
 
-	![The VSCode menu displays a list of executable tasks including 'cloud-provision', 'config_wifi' and 'device-upload'.  The 'device-upload' selection is highlighted.]({{"/assets/images/mini-solution/air-traffic-control-simulator/lab1/vs-select-device-upload.png" | absolute_url }})
+	![The VSCode menu displays a list of executable tasks including 'cloud-provision', 'config_wifi' and 'device-upload'.  The 'device-upload' selection is highlighted.](images/vs-select-device-upload.png)
 
     _Starting the device-upload process_
 
@@ -72,8 +74,23 @@ In this exercise, you will compile an embedded C++ app that transmits events to 
 
 1. Wait until the message "Terminal will be reused by tasks, press any key to close it" appears in the Terminal window. After the device restarts, confirm that the message "IN FLIGHT" appears on the screen of the device, followed by X, Y, and Z values that change when you tilt the board in any direction. These are the accelerometer values passed to the IoT Hub. The fact that they appear on the screen confirms that the upload was successful, and that the app is running on the device.
 
-	![The MXChip IoT DevKit display shows a label of "In Flight" with telemetry data for x, y and z axis readings from the onboard gyroscope.]({{"/assets/images/mini-solution/air-traffic-control-simulator/lab1/chip-in-flight.png" | absolute_url }})
+	![The MXChip IoT DevKit display shows a label of "In Flight" with telemetry data for x, y and z axis readings from the onboard gyroscope.](images/chip-in-flight.png)
 
     _MXChip IoT DevKit with your embedded code running on it_
 
-We know that the device is transmitting events. Now let's make sure those events are being received by the IoT Hub.
+## Verify Messages
+
+Now that the code is deployed to your board, you should be able to see messages coming into your Azure IoT Hub, and you can view the logs from your Function's executions.
+
+1. In the <a href="https://portal.azure.com" target="_blank">Azure Portal</a>, search for your ***&lt;name_prefix&gt;iot*** hub, and open it's blade.  Then along the left hand side, click the "**IoT Devices**" link and verify that the "**AZ3166**" device was created:
+
+    > **Note**: the "`cloud-provision`" task you ran in Visual Studio created the device ID for you.  It defaults to creating a device named `AZ3166` if one doesn't already exist in the IoT Hub you select.
+
+    ![AZ3166 Device ID](images/az3166deviceinhub.png)
+
+1. Next, click on the "**Overview**" link and view the number of messages that have been sent into the hub:
+
+    > **Note**: It will take a few minutes for the message count to be updated.  You can go to another page, and then return to the "**Overview**" page to refresh it.
+
+    ![Verify IoT Hub Messages](images/verifyiothubmessages.png)
+
