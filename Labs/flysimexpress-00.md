@@ -1,4 +1,7 @@
-## FlySim Express Hands-On Workshop
+# FlySim Express Hands-On Workshop Introduction
+
+## Overview
+
 
 In this hands-on workshop, you will build a comprehensive IoT solution that demonstrates some of the very best features Microsoft Azure has to offer, including [IoT Hubs](https://azure.microsoft.com/services/iot-hub/), [Event Hubs](https://azure.microsoft.com/services/event-hubs/), [Azure Functions](https://azure.microsoft.com/services/functions/), and [Stream Analytics](https://azure.microsoft.com/services/stream-analytics/).  The solution you build today will culminate into an Air-Traffic Control (ATC) app that shows simulated aircraft flying through an ATC sector and warns users when aircraft get too close to each other. While these labs are best to do with several peers, there is an application in the lab assets which can inject simulated drones into the workstream (details available in the [Labs section](#labs).)
 
