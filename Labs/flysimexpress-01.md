@@ -32,4 +32,4 @@ So, your task is to:
       - Upgrade the firmware to the latest version
       - Download and install the lasted Development Kit for the board.
 
-1. When you have successfully prepared your board, you're ready to move on to lab "[02 - Deploy and Verify Your Resources in Azure](./flysimexpress-02.md")
+1. When you have successfully prepared your board, you're ready to move on to lab "[02 - Deploy and Verify Your Resources in Azure](./flysimexpress-02.md)

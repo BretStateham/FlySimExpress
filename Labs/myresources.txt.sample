@@ -1,0 +1,82 @@
+Use this file to keep track of the resources, ids, connection strings, access tokens, etc. for the various resources you are create throughout this lab.
+
+========================================
+Name Prefix
+========================================
+
+Document your name prefix here:
+<paste your Naming convention prefix here>
+
+========================================
+Azure IoT Hub Resources 
+========================================
+
+IoT Hub Name:
+<paste your IoT Hub name here>
+
+
+IoT Hub "iothubowner" SAS Policy Primary Connection String:
+<paste your IoT Hub "iothubowner" sas policy connection string here Hub name here>
+
+IoT Hub Device Name:
+The default device name created by the 'cloud-provision' task is AZ3166.  
+If you used something different, document it below
+AZ3166 
+
+========================================
+Azure Storage Account Resources
+========================================
+
+Azure Storage Account Name:
+<paste your Azure Storage Account name here>
+
+Azure Storage Account Primary Connection String:
+<paste your Azure Storeage Account Primary Connection String here>
+
+========================================
+Your Azure Event Hub Resources
+========================================
+
+Your Azure Event Hub Namespace Name:
+<paste your Event Hub's Service Bus Namespace name here>
+
+Your Root Manage Shared Access Key SAS Policy Primary Connection String:
+<paste your Event Hub Namespace's RootManageSharedAccessKey SAS Policy primary connection string here>
+
+Your Event Hub Name:
+flysim
+
+========================================
+Shared Azure Event Hub Resources
+========================================
+
+Shared Azure Event Hub Namespace Name:
+<paste the Shared Event Hub's Service Bus Namespace name here>
+
+Shared Root Manage Shared Access Key SAS Policy Primary Connection String:
+<paste the Shared Event Hub Namespace's RootManageSharedAccessKey SAS Policy primary connection string here>
+
+Shared Event Hub Name:
+flysim-shared-input-hub
+
+========================================
+Azure Function App Resources
+========================================
+
+Function App Name:
+<paste your Azure Function App Name here>
+
+Git URL (You can copy this from the overview page of your Azure Function App):
+<paste your Azure Function App Git URL here>
+
+Deployment Credentials:
+User Name:	<paste your deployment credentials user name here>
+Password:	<paste your deployment credentials password here>
+
+App Settings:
+"AzureWebJobsStorage"="<Paste your Azure Storage Account Primary Connection String here>"
+"AzureWebJobsDashboard"="<Paste your Azure Storage Account Primary Connection String here>",
+"IoTHubConnection"="<paste your IoT Hub "iothubowner" sas policy connection string here Hub name here>",
+"EventHubConnection"="<paste your Event Hub Namespace's RootManageSharedAccessKey SAS Policy primary connection string here>;EntityPath=flysim",
+"SharedEventHubConnection"="<paste the Shared Event Hub Namespace's RootManageSharedAccessKey SAS Policy primary connection string here>;EntityPath=flysim-shared-input-hub",
+

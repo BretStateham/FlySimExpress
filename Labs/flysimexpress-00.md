@@ -47,6 +47,15 @@ In order to successfully complete this workshop as an attendee, you will need:
   - [Latest DevKit for Windows](https://aka.ms/devkit/prod/installpackage/latest)
   - [Latest DevKit for macOS](https://aka.ms/devkit/prod/installpackage/mac/latest)
 
+  > **Note**: The Dev Kit includes a number of software packages.  By installing the latest Dev Kit, you should also get the latest version of the following:
+
+    - Azure CLI
+    - Node.js
+    - Visual Studio Code
+    - Arduino UI
+    - Custom Board manager for Arduino IDE
+    - Board drivers for Windows
+
 - Finally, you will need to complete the "[Get Started](https://microsoft.github.io/azure-iot-developer-kit/docs/get-started/)" walkthrough for the dev board.  Again, we'll guide you through that process later.
 
 - The Zip File with the Workshop Contents.  You can download the zip file from [https://aka.ms/FlySimExpress](https://aka.ms/FlySimExpress).
