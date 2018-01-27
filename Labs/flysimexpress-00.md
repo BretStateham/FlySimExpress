@@ -94,6 +94,8 @@ There are a few labs you need to go through to complete the workshop. They are:
 
 - **[04 - Deploy The Code to your Device and "Fly"](./flysimexpress-04.md)**
 
+- **[# 05 - Clean Up](./flysimexpress-05.md)**
+
 - **[PRESENTER ONLY - Configure Shared Resources and ATC App](./flysimexpress-presenter.md)**
 
   - If you are attending the workshop, your presenter will go through this for the entire group.  You can just sit back and enjoy the ride.

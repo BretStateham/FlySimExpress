@@ -20,6 +20,8 @@ This lab has a number of dependencies on your laptop and environment.  You can l
 
 - **[04 - Deploy The Code to your Device and "Fly"](./Labs/flysimexpress-04.md)**
 
+- **[# 05 - Clean Up](./Labs/flysimexpress-05.md)**
+
 - **[PRESENTER ONLY - Configure Shared Resources and ATC App](./Labs/flysimexpress-presenter.md)**
 
   - If you are attending the workshop, your presenter will go through this for the entire group.  You can just sit back and enjoy the ride.
