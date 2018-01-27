@@ -2,11 +2,11 @@
 
 A version of the Azure IoT Developer Kit Air Traffic Control Simulator project meant for shorter workshops and cross platform users
 
-![ATC App](Labs/images/atc-app.png)
+![ATC App](./Labs/images/atc-app.png)
 
 ## Prerequisites
 
-This lab has a number of dependencies on your laptop and environment.  You can learn more about them by reading the [Prerequisites](iotdevfest18prereqs.md)
+This lab has a number of dependencies on your laptop and environment.  You can learn more about them by reading the [Prerequisites](./iotdevfest18prereqs.md)
 
 ## Labs
 

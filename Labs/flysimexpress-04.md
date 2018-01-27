@@ -14,7 +14,7 @@ In this exercise, you will compile an embedded C++ app that transmits events to 
  
 1. **For those users on Windows**:
 
-    - Press **F1** and type "terminal" into the search box. Then select **Select Default Shell**.
+    - Press **F1** and type "terminal" into the search box. Then select **Terminal: Select Default Shell**.
 
       ![The VSCode quick start menu has the word 'terminal' entered in it's text box with the selection 'Terminal: Select Default Shell' highlighted.](images/select-default-shell-1.png)
 
@@ -103,3 +103,9 @@ Now that the code is deployed to your board, you should be able to see messages 
 1. Lastly, if the Presenter is running the AirTrafficSim app, you can locate your plane's data on it.  As you tilt your board forward/backward and left/right you affect the pitch and roll and therefore it's altitude, heading, latitude, and longitude.  Over time you should see your plane's meta data changing on the AirTrafficSim screen:
 
     ![Air Traffic Sim](images/planinatc.png)
+
+1. Tilt your MXChip board forward/backward (Screen Side is "UP", USB Port edge is "FRONT") and left/right to "fly" your plane. 
+
+1. Try to get very close to another plane to see them both turn red
+
+  - The Stream Analytics job created by the presenter is looking for close planes, sending a warning to the "flysim-shared-output-hub" and and AirTrafficSim app is getting those warnings and coloring the planes involved red.

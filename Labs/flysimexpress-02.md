@@ -79,7 +79,7 @@ ___
 
 When you installed the Azure IoT Developer Kit in Lab [01 - Prepare the Azure IoT Development Kit Board](flysimexpress-02.md), it should have installed the "<a href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli" target="_blank">Azure CLI 2.0</a>" for you.  The Azure CLI is a cross-platform command line interface (CLI) that allows you to easily manage your resources in Azure from the command line. In this exercise, we'll make sure that the Azure CLI is working, and that you are logged into it. 
 
-### Use PowerShell on Windows
+#### Use PowerShell on Windows
 
 For those completing the workshop with macOS, you can ignore this section.  However, for those using Windows 10 computers for the workshop, you should make sure to complete all of the command line statements, etc. using PowerShell, not the Command Prompt (cmd) or the Windows Subsystem for Linux (WSL/bash).  There are some commands we will use later as part of the deployment of code to the device that only work in PowerShell, and sticking to PowerShell will help to ensure your success.
 

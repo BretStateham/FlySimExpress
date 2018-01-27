@@ -2,7 +2,7 @@
 
 ## Overview 
 
-In the previous lab "[02 - Deploy and Verify Your Resources in Azure](flysimexpress-02.md)", we deployed a number of resources including an Azure Function App.  Function Apps are one of the "Serverless Compute" models available in Azure.  They give you an easy way to define some code that you want to execute, when or why that code should run, and what resources it has access to.  You can do all of that without having to go through the trouble of creating Virtual Machines or even traditional Web Apps.
+In the previous lab "[02 - Deploy and Verify Your Resources in Azure](./flysimexpress-02.md)", we deployed a number of resources including an Azure Function App.  Function Apps are one of the "Serverless Compute" models available in Azure.  They give you an easy way to define some code that you want to execute, when or why that code should run, and what resources it has access to.  You can do all of that without having to go through the trouble of creating Virtual Machines or even traditional Web Apps.
 
 The Azure Function App we created previously however doesn't actually have any CODE yet.  It's just a container for code to exist in, and be executed from.  In this lab, we'll deploy the code for our function.
 
@@ -12,7 +12,7 @@ First, here's a refresh on what our solution architecture looks like:
 
 ![Express Architecture](images/architecture-express.png)
 
-If you recall from the "[FlySim Express Hands-On Workshop Introduction](flysimexpress-00.md)", the Azure IoT Developer Kit MXChip device just publishes it's accelerometer x,y & z values to the Azure IoT Hub.  It's the Azure Function that will take that data from the IoT Hub and use it to simulate the flight data (pitch, roll, altitude, heading, latitude and longitude) for a virtual plane.
+If you recall from the "[FlySim Express Hands-On Workshop Introduction](./flysimexpress-00.md)", the Azure IoT Developer Kit MXChip device just publishes it's accelerometer x,y & z values to the Azure IoT Hub.  It's the Azure Function that will take that data from the IoT Hub and use it to simulate the flight data (pitch, roll, altitude, heading, latitude and longitude) for a virtual plane.
 
 The Function will generate a new "genesis" or starting state the first time it is run, or when it can retrieve its previous state from Azure Storage.  It then applies the x & y acclerometer values passed to the Azure IoT Hub from the device to update the flight data.  It then saves that state back to Azure Storage so it can retrieve and update it when the next message comes in. 
 

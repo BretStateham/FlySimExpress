@@ -79,8 +79,8 @@ In order to successfully complete this workshop as an attendee, you will need:
     > **Note**: A credit card is required as part of the Free Trial sign up process.  No charges will be applied to the card, it is used just for identity verification purposes.
 
     1. Open a private browser session
-    1. Go to http://outlook.com and create a new somename@outlook.com account
-    1. Still in the same private browser session, navigate to http://azure.com/free and complete the free trial registration using your new outlook.com address, but with your real phone number and credit card for verification purposes.
+    1. Go to <a href="http://outlook.com" target="_blank">outlook.com</a> and create a new somename@outlook.com account
+    1. Still in the same private browser session, navigate to <a href="http://azure.com/free" target="_blank">azure.com/free</a> and complete the free trial registration using your new outlook.com address, but with your real phone number and credit card for verification purposes.
 
 ## Labs
 

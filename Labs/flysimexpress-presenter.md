@@ -14,6 +14,10 @@ This lab will be pretty sparsely documented for now.  For more details on naming
 
 1. Open a PowerShell prompt or Terminal Window and navigate to the "**`AzureResources/Presenter`**" folder under the workshop contents.
 
+    ```bash
+    cd FlySimExpress/AzureResources/Presenter
+    ```
+
 1. If you wish, you can review the contents of the "**`template-presenter.json`**" file.  It creates:
 
     - An Azure Storage Account for Stream Analytics to use
