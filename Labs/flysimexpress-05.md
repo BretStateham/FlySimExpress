@@ -2,7 +2,7 @@
 
 Well, hopefully you had a good time during the workshop and learned a lot, but all good things must come to an end. 
 
-Before you leave for the day (unless you can't wait to go home and show your work to your kids, spouse, significant other, boss, co-workers, parents and grandparents), you should probably delete the resources you created so you don't continue to get charged for them. 
+Before you leave for the day (unless you can't wait to go home and show your work to your kids, spouse, significant other, boss, co-workers, parents and grandparents), you should probably delete the resources you created so you don't continue to get charged for them.
 
 The cool thing is, it's really easy:
 
