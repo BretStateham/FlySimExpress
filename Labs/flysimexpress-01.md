@@ -19,7 +19,9 @@ So, your task is to:
 
     > **Note**:  If you have problems using the WiFi connection method documented in the Get Started guide below, you can attempt to use the manual wifi configuration instructions here: <a href="https://github.com/BretStateham/azure-iot-devkit-manual-wifi" target="blank">Azure IoT Developer Kit Manual WiFi Configuration</a>
 
-1. Follow the <a href="https://microsoft.github.io/azure-iot-developer-kit/docs/get-started/" target="_blank">Get Started</a> guide.
+1. Follow the <a href="https://microsoft.github.io/azure-iot-developer-kit/docs/get-started/" target="_blank">Get Started</a> guide for the board.  These steps will help you prepare the board, and your computer to work with the board.  You only need to complete the steps shown as "**REQUIRED STEPS**" in the image below.  You can optionally choose to complete the "**OPTIONAL STEPS**" as well.  Those steps will give you an opportunity to deploy a different sample to your board initially, although you will replace it later as you complete the remaining steps in this lab.
+
+    ![Required vs Optional Steps](images/gettingstartedRequiredAndOptionalSteps.png)
 
     > **Note**: If you are attending a live workshop, you may have access to a USB stick that has the necessary files on it to save download time and venue network bandwith.  Check with your event organizers to see if a drive is available.
 
