@@ -1,6 +1,6 @@
 # 01 - Prepare the Azure IoT Development Kit Board
 
-The team behind the Azure IoT Developer Kit MXChip board works tirelessly to help you be successful.  That work results in updates want to be sure to use:
+The team behind the Azure IoT Developer Kit MXChip board works tirelessly to help you be successful.  That work results in updates that you want to be sure to use:
 
   - Updated firmware for the board itself
   - Updated Development Kit which includes the tools necessary to create and deploy code onto the board. 
@@ -32,6 +32,6 @@ So, your task is to:
     As you complete the Get Started Guide you will
 
       - Upgrade the firmware to the latest version
-      - Download and install the lasted Development Kit for the board.
+      - Download and install the latest Development Kit for the board.
 
 1. When you have successfully prepared your board, you're ready to move on to lab "[02 - Deploy and Verify Your Resources in Azure](./flysimexpress-02.md)"
