@@ -22,6 +22,7 @@
       "apiVersion": "2016-02-03",
       "name": "[variables('iotHubName')]",
       "location": "[variables('location')]",
+      "properties": {},
       "sku": {
         "name": "S1",
         "tier": "Standard",
@@ -47,6 +48,7 @@
       "kind": "functionapp",
       "name": "[variables('consumptionPlanName')]",
       "location": "[variables('location')]",
+      "properties": {},
       "sku": {
         "name": "Y1",
         "tier": "Dynamic",

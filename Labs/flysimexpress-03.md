@@ -12,9 +12,9 @@ First, here's a refresh on what our solution architecture looks like:
 
 ![Express Architecture](images/architecture-express.png)
 
-If you recall from the "[FlySim Express Hands-On Workshop Introduction](./flysimexpress-00.md)", the Azure IoT Developer Kit MXChip device just publishes it's accelerometer x,y & z values to the Azure IoT Hub.  It's the Azure Function that will take that data from the IoT Hub and use it to simulate the flight data (pitch, roll, altitude, heading, latitude and longitude) for a virtual plane.
+If you recall from the "[FlySim Express Hands-On Workshop Introduction](./flysimexpress-00.md)", the Azure IoT Developer Kit MXChip device just publishes it's accelerometer x,y & z values to the Azure IoT Hub.  It's the Azure Function that will take that data from the IoT Hub and use it to simulate the "flight data" (pitch, roll, altitude, heading, latitude and longitude) for a virtual plane.
 
-The Function will generate a new "genesis" or starting state the first time it is run, or when it can retrieve its previous state from Azure Storage.  It then applies the x & y acclerometer values passed to the Azure IoT Hub from the device to update the flight data.  It then saves that state back to Azure Storage so it can retrieve and update it when the next message comes in. 
+The Function will generate a new "genesis" or starting state the first time it is run, or whenever it is unable to retrieve its previous state from Azure Storage.  It then applies the x & y acclerometer values passed to the Azure IoT Hub from the device to update the flight data.  It then saves that state back to Azure Storage so it can retrieve and update it when the next message comes in. 
 
 Finally, the Function will take the flight data it has calculated and pass it along to an Event Hub that was created by the presenter.  The presenter will be running an app that retrieves the flight data from all attendees at the event, and plots them as points on a map, similar to an Air Traffic Control screen.
 
@@ -67,7 +67,7 @@ Before we can deploy code to Azure, we need to know how to Authenticate with cre
     }    
     ```
 
-1. If you have not configured, or do not recall the deployment credentials for your subscription, you can configure them using the following command, passing in your own values for the **&lt;UserName&gt;** and **&lt;UserName&gt;** place holders.  ***IF THIS IS NOT YOUR SUBSCRIPTION, OR YOU HAVE OTHER PROCESSES THAT DEPEND ON THE DEPLOYMENT CREDENTIALS, DO NOT CHANGE THEM***:
+1. If you have not configured, or do not recall the deployment credentials for your subscription, you can configure them using the following command, passing in your own values for the **&lt;UserName&gt;** and **&lt;Password&gt;** place holders.  ***IF THIS IS NOT YOUR SUBSCRIPTION, OR YOU HAVE OTHER PROCESSES THAT DEPEND ON THE DEPLOYMENT CREDENTIALS, DO NOT CHANGE THEM***:
 
     ```bash
     az functionapp deployment user set --user-name <UserName> --password <Password>
@@ -209,7 +209,7 @@ If your presenter hasn't yet completed the "**[PRESENTER ONLY - Configure Shared
 
     ![Application Settings Link](images/functionappsettingslink.png)
 
-1. On the "**Application Settings*"" blade, scroll down to find the "**SharedEventHubConnection**" setting (you may recall that the Application Settings you see here were created by the ARM template you ran previously.  However there was no way for the ARM template to determine this connection string so we have to provide it manually).
+1. On the "**Application Settings**" blade, scroll down to find the "**SharedEventHubConnection**" setting (you may recall that the Application Settings you see here were created by the ARM template you ran previously.  However there was no way for the ARM template to determine this connection string so we have to provide it manually).
 
 1. Click in the box that reads "**`<SHARED EVENT HUB CONNECTIONSTRING AND ENTITY PATH PROVIDED BY THE PRESENTER>`**" and replace it's contents with the connection string provided by the presenter for the "**`flysim-shared-input-hub`**" event hub.  Make sure to scroll back to the top of the page and click the **SAVE** button:
 
@@ -230,7 +230,7 @@ Great, so we've deployed our function to Azure, we've talked about what it does,
 
 
 
-1. To make your code more readable, and possibly be able to edit it, open the Location the "**`FlySimFunctions`**" folder under the folder where you extractded the workshop contents to, and open it with Visual Studio Code. Navigate to the "**`FlySimIotData/index.js`**" file and click on it to view it.
+1. To make your code more readable, and possibly be able to edit it, open the Location the "**`FlySimFunctions`**" folder under the folder where you extracted the workshop contents to, and open it with Visual Studio Code. Navigate to the "**`FlySimIotData/index.js`**" file and click on it to view it.
 
     ![Function Code open in Visual Studio Code](images/functioninvscode.png)
 
