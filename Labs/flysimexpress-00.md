@@ -82,9 +82,19 @@ In order to successfully complete this workshop as an attendee, you will need:
     1. Go to <a href="http://outlook.com" target="_blank">outlook.com</a> and create a new somename@outlook.com account
     1. Still in the same private browser session, navigate to <a href="http://azure.com/free" target="_blank">azure.com/free</a> and complete the free trial registration using your new outlook.com address, but with your real phone number and credit card for verification purposes.
 
+## FAQs
+
+There are a number of helpful tips available on the [FAQs page](./flysimexpress-faq.md)
+
 ## Labs
 
 There are a few labs you need to go through to complete the workshop. They are:
+
+- **[PRESENTER ONLY - Configure Shared Resources and ATC App](./flysimexpress-presenter.md)**
+
+  - If you are attending the workshop, your presenter will go through this for the entire group.  You can just sit back and enjoy the ride.
+
+  - If you will be completing the entire workshop yourself, you will need to complete this first lab yourself. You will also need a Windows 10 Professional or better workstation and Visual Studio 2017 Community Edition or better to run the Air Traffic Control Simulator (AirTrafficSim) UWP application as described in the prerequistes above.
 
 - **[01 - Prepare the Azure IoT Development Kit Board](./flysimexpress-01.md)**
 
@@ -96,9 +106,4 @@ There are a few labs you need to go through to complete the workshop. They are:
 
 - **[05 - Clean Up](./flysimexpress-05.md)**
 
-- **[PRESENTER ONLY - Configure Shared Resources and ATC App](./flysimexpress-presenter.md)**
-
-  - If you are attending the workshop, your presenter will go through this for the entire group.  You can just sit back and enjoy the ride.
-
-  - If you will be completing the entire workshop yourself, you will need to complete this first lab yourself. You will also need a Windows 10 Professional or better workstation and Visual Studio 2017 Community Edition or better to run the Air Traffic Control Simulator (AirTrafficSim) UWP application as described in the prerequistes above.
 
