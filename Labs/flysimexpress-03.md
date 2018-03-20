@@ -234,14 +234,14 @@ Great, so we've deployed our function to Azure, we've talked about what it does,
 
     ![Function Code open in Visual Studio Code](images/functioninvscode.png)
 
-1. Review the code, it is pretty heavily documented show it should make sense with a little time to absorb it.  Basically though it:
+1. Review the code, it is pretty heavily documented so it should make sense if you spend a little time to absorb it.  Basically it:
 
-    > **Note**: Notice that the airspeed is hard coded to 384 (around line 76).  That means that your plane travels at a fixed speed that is the same as all of the other attendees planes.  If you need to speed your plane up to make it easier to cause proximity warnings laster, you could modify that value here, then re-deploy your function using "`git add .`", "`git commit -m 'Changed speed'`" and "`git push`".
+    > **Note**: Notice that the airspeed is hard coded to 384 (around line 76).  That means that your plane travels at a fixed speed that is the same as all of the other attendee's planes.  If you need to speed your plane up to make it easier to cause proximity warnings faster, you could modify that value here, then re-deploy your function using "`git add .`", "`git commit -m 'Changed speed'`" and "`git push`".
 
     - Attempts to retrieve the flight data from a previous execution from an Azure Storage Table named "`deviceState`".  
     - If it successfully retrieves the previous record, it retrieves the values from it
     - If it can't retrieve the previous record for any reason, it creates a new "genesis" state and picks a starting pitch, roll, altitude, heading, latitude and longitude.
-    - It then pulls in the accelerometer x & y values from the message that was input from the IoT Hub and uses them to make reasonable updates to the flight data based on them values.
+    - It then pulls in the accelerometer x & y values from the message that was input from the IoT Hub and uses them to make reasonable updates to the flight data based on the values.
     - It writes the flight data to the Shared Event Hub "`flysim-shared-input-hub`" created by the presenter
     - It saves the flight data to the Azure Storage Table named "`deviceState`" so it can be read the next time the function runs.
 
