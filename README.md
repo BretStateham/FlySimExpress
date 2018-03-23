@@ -8,7 +8,6 @@ A version of the Azure IoT Developer Kit Air Traffic Control Simulator project m
 
 There are a number of helpful tips available on the [FAQs page](./Labs/flysimexpress-faq.md)
 
-
 ## Labs
 
 - **[00 - Lab Introduction](./Labs/flysimexpress-00.md)**
