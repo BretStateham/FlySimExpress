@@ -3,7 +3,7 @@
 ## Overview
 
 
-In this hands-on workshop, you will build a comprehensive IoT solution that demonstrates some of the very best features Microsoft Azure has to offer, including [IoT Hubs](https://azure.microsoft.com/services/iot-hub/), [Event Hubs](https://azure.microsoft.com/services/event-hubs/), [Azure Functions](https://azure.microsoft.com/services/functions/), and [Stream Analytics](https://azure.microsoft.com/services/stream-analytics/).  The solution you build today will culminate into an Air-Traffic Control (ATC) app that shows simulated aircraft flying through an ATC sector and warns users when aircraft get too close to each other. While these labs are best to do with several peers, there is an application in the lab assets which can inject simulated drones into the workstream (details available in the [Labs section](#labs).)
+In this hands-on workshop, you will build a comprehensive IoT solution that demonstrates some of the very best features Microsoft Azure has to offer, including [IoT Hubs](https://azure.microsoft.com/services/iot-hub/), [Event Hubs](https://azure.microsoft.com/services/event-hubs/), [Azure Functions](https://azure.microsoft.com/services/functions/), and [Stream Analytics](https://azure.microsoft.com/services/stream-analytics/).  The solution you build today will culminate into an Air Traffic Control (ATC) app that shows simulated aircraft flying through an ATC sector and warns users when aircraft get too close to each other. While these labs are best to do with several peers, there is an application in the lab assets which can inject simulated drones into the workstream (details available in the [Labs section](#labs).)
 
 ![A user interface for an Air Traffic Control Application with dots and heading information overlaid on a geographical map.  Also includes summary statistics for all flights shown on the map, as well as attitude information for selected airplanes.](images/atc-app.png)
 
@@ -15,21 +15,15 @@ You will be the pilot of one of these aircraft. And to do the flying, you will u
 
 _MXChip AZ3166 Development Board_
 
-This lab the is "Express" version of the FlySim workshop.  It is intended for shorter duration workshops, as well as for attendees on both Windows and Mac computers.  The Express solution architecture is shown below, with elements that you will build or deploy highlighted in light blue and those deployed by the presenter highlighted in orange:
+This lab the is the "Express" version of the "[Air Traffic Control Simulator](http://aka.ms/flysim)" sample from the [Azure IoT Develop.  It is intended for in person workshops for attendees on both Windows and Mac computers.  The Express solution architecture is shown below, with elements that you will build or deploy highlighted in light blue and those deployed by the presenter highlighted in orange:
 
 ![A data flow diagram showing IoT information originating from an Azure MXChip IoT DevKit flowing through IoT Hub and onto an Azure Function.  From the Azure Function, data is sent to an Event Hub shared by all workshop participants.  The shared Event Hub forwards data to Azure Stream Analytics, where it is forwarded onto another event hub for distribution to the client application.](images/architecture-express.png)
 
 _Express Lab Solution architecture_
 
-This lab is an "Express" version of a full-day workshop that includes a client side Universal Windows Platform (UWP) application as well as the use of Microsoft Cognitive Services.  The full lab requires access to a Windows 10 Pro computer.  If you have access to Windows 10, you can complete the full lab at [http://aka.ms/flysim](http://aka.ms/flysim)
+In this workshop, you will use the MXChip AZ3166 developer board to control your own virtual aircraft by tilting board backward and forward to go up and down, and tilting it left and right to turn. The x, y and z values  from the board's accelerometer sensor will be sent to the Azure IoT Hub in your Azure Subscription where it will trigger an Azure Function to run.  The Azure Function will take the x & y accelerometer data (we ignore the z value in this scenario) and use it to simulate the *flight data* (pitch, roll, latitude, longitude, altitude, and heading) of a your virtual airplane.
 
-![A data flow diagram showing IoT information originating from an Azure MXChip IoT DevKit flowing through IoT Hub and onto an Azure Function.  From the Azure Function, data is bifurcated to flow through a client application, as well as to an Event Hub shared by all workshop participants.  The shared Event Hub forwards data to Azure Stream Analytics, where it is forwarded onto another event hub for distribution to the client application.  Additionally, there are data flows from the client application to Cognitive Services.](images/architecture-full.png)
-
-_Full Workshop Lab Solution architecture_
-
-You will control your virtual aircraft by tilting the MXChip IoT DevKit backward and forward to go up and down, and tilting it left and right to turn. The x, y and z values  from the board's accelerometer sensor will be sent to the Azure IoT Hub in your Azure Subscription where it will trigger an Azure Function to run.  The Azure Function will take the x & y accelerometer data (we ignore the z value in this scenario) and use it to simulate the *flight data* (pitch, roll, latitude, longitude, altitude, and heading) of a virtual airplane.
-
-The destination for that flight data is an Event Hub that is created by the Presenter and shared by you and your peers or the simulator drones.  The shared input event hub data is shown as points on a map in the Air Traffic Control (ATC) UWP app running on the Presenter's Windows 10 Computer. Events from the shared input Event Hub are also consumed by a Stream Analytics job that analyzes fast-moving data for aircraft that are in danger of colliding and provides that data to the a shared "output" event hub that is used by the ATC app. When your aircraft comes too close to another, the ATC app receives the warning from the shared output event hub and it turns the dots for the planes in danger red on the ATC app screen.
+The destination for that flight data is an Event Hub that is created by the presenter and shared by you and your peers or the simulator drones.  The shared input event hub data is shown as points on a map in the Air Traffic Control (ATC) UWP app running on the presenter's Windows 10 computer. Events from the shared input Event Hub are also consumed by a Stream Analytics job that analyzes fast-moving data for aircraft that are in danger of colliding and provides that data to the a shared "output" event hub that is used by the ATC app. When your aircraft comes too close to another, the ATC app receives the warning from the shared output event hub and it turns the dots for the planes in danger red on the ATC app screen.
 
 Ok, enough of the long winded descriptions.  Let's get down to it.
 
@@ -50,7 +44,7 @@ In order to successfully complete this workshop as an attendee, you will need:
   - [Latest DevKit for Windows](https://aka.ms/devkit/prod/installpackage/latest)
   - [Latest DevKit for macOS](https://aka.ms/devkit/prod/installpackage/mac/latest)
 
-  > **Note**: The Dev Kit includes a number of software packages.  By installing the latest Dev Kit, you should also get the latest version of the following:
+  > **Note**: The Dev Kit includes a number of software packages.  By installing the latest Dev Kit, you should also get the appropriate versions of the following:
 
     - Azure CLI
     - Node.js
@@ -66,9 +60,9 @@ In order to successfully complete this workshop as an attendee, you will need:
 - Presenters (or you if you wish to complete the entire lab on your own outside of a workshop) will need:
 
     - A Windows 10 Professional or better computer
-    - [Visual Studio 2017 Community Edition](https://www.visualstudio.com/vs/community/) (FREE) or better with the Windows Development Toosl feature installed.
+    - [Visual Studio 2017 Community Edition](https://www.visualstudio.com/vs/community/) (FREE) or better with the "Windows Development Tools" feature installed.
 
-- An WiFi network that just needs an SSID and Password (no itermediate sign in web page) with all protocols open.  Or if not all protocols need the network needs to at a minimum support inbound and outbound ports for HTTP (80), HTTPS (443), AMQP (5671,5672), and MQTT (8883).
+- A **2.4GHz** WiFi network (the board cannot connect to 5GHz networks) that just needs an SSID and Password (no itermediate sign in web page) with all protocols open.  Or if not all protocols need the network needs to at a minimum support inbound and outbound ports for HTTP (80), HTTPS (443), AMQP (5671,5672), and MQTT (8883).
 
   > **Note**: "***Why no intermediate sign in web page***" you ask?  Well because there is no way for the MXChip board to present the Web UI for you to authenticate it.  You can only give the board standard wifi login credentials (SSID/PWD(PSK)).  Yes, you may be able to connect your COMPUTER to a gated wifi connection where you have a browser to complete the login process, but you can't connect the board to one because the board has no browser, screen, keyboard, mouse, etc.
 
@@ -88,7 +82,7 @@ There are a number of helpful tips available on the [FAQs page](./flysimexpress-
 
 ## Labs
 
-There are a few labs you need to go through to complete the workshop. They are:
+There are a few exercises you need to go through to complete the workshop. They are:
 
 - **[PRESENTER ONLY - Configure Shared Resources and ATC App](./flysimexpress-presenter.md)**
 

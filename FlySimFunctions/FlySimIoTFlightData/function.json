@@ -4,7 +4,7 @@
       "type": "eventHubTrigger",
       "name": "inputMessage",
       "connection": "IoTHubConnection",
-      "path": "devfestiot",
+      "path": "flysimtiot",
       "consumerGroup": "$Default",
       "cardinality": "one",
       "direction": "in"

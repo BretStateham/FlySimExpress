@@ -1,6 +1,6 @@
 # FlySimExpress Workshop
 
-A version of the Azure IoT Developer Kit Air Traffic Control Simulator project meant for shorter workshops and cross platform users
+Use the [Azure IoT Developer kit](http://aka.ms/devkit) and [Microsoft Azure](https://azure.com) to develop an Air Traffic Control Simulator
 
 ![ATC App](./Labs/images/atc-app.png)
 
@@ -27,6 +27,3 @@ There are a number of helpful tips available on the [FAQs page](./Labs/flysimexp
 - **[04 - Deploy The Code to your Device and "Fly"](./Labs/flysimexpress-04.md)**
 
 - **[05 - Clean Up](./Labs/flysimexpress-05.md)**
-
-
-

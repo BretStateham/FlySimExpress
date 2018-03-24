@@ -14,7 +14,7 @@ First, here's a refresh on what our solution architecture looks like:
 
 If you recall from the "[FlySim Express Hands-On Workshop Introduction](./flysimexpress-00.md)", the Azure IoT Developer Kit MXChip device just publishes it's accelerometer x,y & z values to the Azure IoT Hub.  It's the Azure Function that will take that data from the IoT Hub and use it to simulate the "flight data" (pitch, roll, altitude, heading, latitude and longitude) for a virtual plane.
 
-The Function will generate a new "genesis" or starting state the first time it is run, or whenever it is unable to retrieve its previous state from Azure Storage.  It then applies the x & y acclerometer values passed to the Azure IoT Hub from the device to update the flight data.  It then saves that state back to Azure Storage so it can retrieve and update it when the next message comes in. 
+The Function will generate a new "genesis" or starting state the first time it is run, or whenever it is unable to retrieve its previous state from Azure Storage.  It then applies the x & y acclerometer values passed to the Azure IoT Hub from the device to update the flight data.  It then saves that state back to Azure Storage so it can retrieve and update it when the next message comes in.
 
 Finally, the Function will take the flight data it has calculated and pass it along to an Event Hub that was created by the presenter.  The presenter will be running an app that retrieves the flight data from all attendees at the event, and plots them as points on a map, similar to an Air Traffic Control screen.
 
@@ -22,7 +22,7 @@ Finally, the Function will take the flight data it has calculated and pass it al
 
 Azure Functions actually support a number of ways to provide the code.  You can manually enter or upload the code via the portal, you can deploy the code from source control respositories like git, or you can publish the function code from release management solutions like Visual Studio Team Services, Jenkins, etc. 
 
-For this lab, we will create a git repository in the Function App itself, configure our local copy of the code to use that repository as it's "origin" and then simply push the code from our laptops up to the cloud using git. So cool!
+For this lab, you will create a git repository in the Function App itself, configure your local copy of the code to use that repository as it's "origin" and then simply push the code from your laptop up to the cloud using git. So cool!
 
 That does however mean that you need to have git installed on your workstation.  If you don't, download it from <a href="https://git-scm.com/downloads" target="_blank">git-scm.com/downloads</a>.  You also need to make sure that you have configured the global `user.name` and `user.email` settings using these commands:
 
@@ -51,13 +51,15 @@ Before we can deploy code to Azure, we need to know how to Authenticate with cre
     cd /FlySimExpress/FlySimFunctions
     ```
 
-1. Run the following command to view your existing deployment credentials:
+1. First, see if you already have Deployment Credentials configured for your subscription.  To do so, run the following command to view your existing deployment credentials:
 
     ```bash
     az functionapp deployment user show
     ```
 
 1. In the output from the previous statement, locate the **`"publishingUserName"`** value and see if you recognize it, and can recall the password for it.
+
+    > **Note**: If you have NOT yet configured deployment credentials, the "`publishgUserName`" will be `null`.
 
     ```bash
     {
@@ -66,6 +68,10 @@ Before we can deploy code to Azure, we need to know how to Authenticate with cre
       ...
     }    
     ```
+1. If the "`publishingUserName`" value is anything other than `null`, then already have Deployment Credentials configured for your subscription.  
+
+    1. If you recognize the "`publishingUserName`" and know the password for it, you can move on to the next exercise. 
+    1. If you do NOT recognize the "`publishingUserName`" or can't remember the password for it, you will need to create new Deployment Credentials.  ***IF THIS IS NOT YOUR SUBSCRIPTION, OR YOU HAVE OTHER PROCESSES THAT DEPEND ON THE DEPLOYMENT CREDENTIALS, DO NOT CHANGE THEM***
 
 1. If you have not configured, or do not recall the deployment credentials for your subscription, you can configure them using the following command, passing in your own values for the **&lt;UserName&gt;** and **&lt;Password&gt;** place holders.  ***IF THIS IS NOT YOUR SUBSCRIPTION, OR YOU HAVE OTHER PROCESSES THAT DEPEND ON THE DEPLOYMENT CREDENTIALS, DO NOT CHANGE THEM***:
 
@@ -222,7 +228,7 @@ ___
 
 ### Review the Azure Function Code
 
-Great, so we've deployed our function to Azure, we've talked about what it does, but we haven't actually looked at the code.  Let's finally do that.  To make it easier to see, we'll just Visual Studio Code on your computer to review the code, but you can also view it in the portal. 
+Great, so you've deployed your function to Azure, we've talked about what it does, but we haven't actually looked at the code.  Let's finally do that.  To make it easier to see,  just use Visual Studio Code on your computer to review the code, but you can also view it in the portal.
 
 1. The code for your function is visible in the portal if you just click on the name of the "**FlySimIoTData**" function in the ***&lt;name_prefix&gt;functions*** Function App.  However, it is a little hard to see, and it is read only because it was put there by a git deployment.  If you want to edit the code, you need to edit it on your workstation, and redeploy with git.
 
@@ -247,11 +253,35 @@ Great, so we've deployed our function to Azure, we've talked about what it does,
 
 1. Next, open the "**`FlySimIotData/function.json`**" file. It defines:
 
-    - The IoT Hub message trigger that causes the trigger to be executed whenever a new message is sent by the device to the IoT Hub
-    - The SharedEventHubConnection that we previously provided a value for in the portal to allow the function to send your flight data to the shared "`flysim-shared-input-hub`" created by the presenter.
+    - The IoT Hub message trigger that causes the trigger to be executed whenever a new message is sent by the device to the IoT Hub.  The binding actually is defined as an `eventHubTrigger` because the API used to retrieve messsages from an IoT Hub is the same as the API used to read from Event Hubs.  So even though we're actually pointing at an IoT Hub, it looks to the Azure Function just like an Event Hub.
+    - The SharedEventHubConnection that we previously provided a value for in the portal to allow the function to send your flight data to the shared "`flysim-shared-input-hub`" created by the presenter.  It's from that "`flysim-shared-input-hub`" that the presenter's ATC UWP app will get the details about each attendees airplane so it can plot them on the map.
 
-1. The configuration provided by the "`function.json`" file is what is visible on the "**Integrate**" page in the portal:
+    ```json
+    {
+    "bindings": [
+        {
+        "type": "eventHubTrigger",
+        "name": "inputMessage",
+        "connection": "IoTHubConnection",
+        "path": "flysimtiot",
+        "consumerGroup": "$Default",
+        "cardinality": "one",
+        "direction": "in"
+        },
+        {
+        "type": "eventHub",
+        "name": "sharedOutputMessage",
+        "connection": "SharedEventHubConnection",
+        "path": "flysim-shared-input-hub",
+        "direction": "out"
+        },
+    ],
+    "disabled": false
+    }
+    ```
+
+1. The configuration provided by the "`function.json`" file is also what is visible on the "**Integrate**" page in the portal:
 
     ![Function Integrations in the Portal](images/functionintegrationsinportal.png)
-    
+
 1. Feel free to checkout the other files in the project.  When you are ready, go ahead on to lab [04 - Deploy The Code to your Device and "Fly"](./flysimexpress-04.md)
