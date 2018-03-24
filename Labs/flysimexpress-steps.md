@@ -230,6 +230,12 @@ If you want plane metadata (name, direction) to be visible when you are zoomed o
 
     ![Save Settings](images/saveapplicationsettings.png)
 
+> TIP: If you prefer the CLI, set this app setting using...
+
+```bash
+az functionapp config appsettings set --settings SharedEventHubConnection=<connection_string> -n <name_prefix>functions -g <name_prefix>group
+```
+
 # 04 - Deploy The Code to your Device and "Fly"
 
 1. Make sure the MXChip board is connected to your computer's USB board.
