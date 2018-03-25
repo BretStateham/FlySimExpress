@@ -162,7 +162,7 @@ namespace AirTrafficSim
         {
             foreach (var plane in ActivePlanes)
             {
-                plane.ZoomDeepLevel = (value < 90) ? Visibility.Visible : Visibility.Collapsed;
+                plane.ZoomDeepLevel = (value < 1100) ? Visibility.Visible : Visibility.Collapsed;
             }
 
         }

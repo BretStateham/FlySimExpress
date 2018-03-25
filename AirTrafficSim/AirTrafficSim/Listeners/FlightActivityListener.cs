@@ -11,104 +11,119 @@ using System.Collections.ObjectModel;
 
 namespace AirTrafficSim.Listeners
 {
-    public class FlightActivityListener
+  public class FlightActivityListener
+  {
+    private EventHubClient client { get; set; }
+    private EventHubConsumerGroup consumerGroup { get; set; }
+    private EventHubReceiver primaryReceiver { get; set; }
+    private EventHubReceiver secondaryReceiver { get; set; }
+
+    public List<NewFlightInfo> PendingFlightInfo = new List<NewFlightInfo>();
+
+    public int CurrentDelay = 1;
+
+    internal bool IsConfigured => Common.CoreConstants.SharedEventHubEndpoint.ToLower().Contains("endpoint=sb://");
+
+    public async void StartListeningAsync()
     {
-        private EventHubClient client { get; set; }
-        private EventHubConsumerGroup consumerGroup { get; set; }
-        private EventHubReceiver primaryReceiver { get; set; }
-        private EventHubReceiver secondaryReceiver { get; set; }
+      this.client = EventHubClient.CreateFromConnectionString(Common.CoreConstants.SharedEventHubEndpoint, Common.CoreConstants.SharedFlightActivityHubName);
 
-        public List<NewFlightInfo> PendingFlightInfo = new List<NewFlightInfo>();
-
-        public int CurrentDelay = 1;
-
-        internal bool IsConfigured => Common.CoreConstants.SharedEventHubEndpoint.ToLower().Contains("endpoint=sb://");
-
-        public async void StartListeningAsync()
+      if (Common.CoreConstants.ConsumerGroup.ToLower().Trim() == "$default")
+      {
+        this.consumerGroup = this.client.GetDefaultConsumerGroup();
+      }
+      else
+      {
+        try
         {
-            this.client = EventHubClient.CreateFromConnectionString(Common.CoreConstants.SharedEventHubEndpoint, Common.CoreConstants.SharedFlightActivityHubName);
-
-            this.consumerGroup = this.client.GetDefaultConsumerGroup();
-            this.primaryReceiver = this.consumerGroup.CreateReceiver("0", DateTime.Now.ToUniversalTime());
-            this.secondaryReceiver = this.consumerGroup.CreateReceiver("1", DateTime.Now.ToUniversalTime());
-
-            await Task.Run(() => StartListeningForNavigationCommands());
+          this.consumerGroup = this.client.GetConsumerGroup(Common.CoreConstants.ConsumerGroup.ToLower().Trim());
         }
-
-        private async void StartListeningForNavigationCommands()
+        catch
         {
-            while (true)
+          this.consumerGroup = this.client.GetDefaultConsumerGroup();
+        }
+      }
+
+      this.primaryReceiver = this.consumerGroup.CreateReceiver("0", DateTime.Now.ToUniversalTime());
+      this.secondaryReceiver = this.consumerGroup.CreateReceiver("1", DateTime.Now.ToUniversalTime());
+
+      await Task.Run(() => StartListeningForNavigationCommands());
+    }
+
+    private async void StartListeningForNavigationCommands()
+    {
+      while (true)
+      {
+        try
+        {
+          var primaryEventData = this.primaryReceiver.Receive();
+
+          if (primaryEventData != null)
+          {
+            byte[] bytes = primaryEventData.GetBytes();
+
+            var payload = Encoding.UTF8.GetString(bytes);
+
+            try
             {
-                try
-                {
-                    var primaryEventData = this.primaryReceiver.Receive();
+              var flightInfo = JsonConvert.DeserializeObject<NewFlightInfo>(payload);
 
-                    if (primaryEventData != null)
-                    {
-                        byte[] bytes = primaryEventData.GetBytes();
+              this.PendingFlightInfo.Add(flightInfo);
 
-                        var payload = Encoding.UTF8.GetString(bytes);
+              if (this.PendingFlightInfo.Count >= App.ViewModel.ActivePlaneCount)
+              {
+                CurrentDelay = 1000;
 
-                        try
-                        {
-                            var flightInfo = JsonConvert.DeserializeObject<NewFlightInfo>(payload);
+                App.ViewModel.UpdateFlightInformation(this.PendingFlightInfo);
 
-                            this.PendingFlightInfo.Add(flightInfo);
-
-                            if (this.PendingFlightInfo.Count >= App.ViewModel.ActivePlaneCount)
-                            {
-                                CurrentDelay = 1000;
-
-                                App.ViewModel.UpdateFlightInformation(this.PendingFlightInfo);
-
-                                this.PendingFlightInfo.Clear();
-                            }
-                            
-                        }
-                        catch
-                        {
-                        }
-
-                    }
-
-                    var secondaryEventData = this.secondaryReceiver.Receive();
-
-                    if (secondaryEventData != null)
-                    {
-                        byte[] bytes = secondaryEventData.GetBytes();
-
-                        var payload = Encoding.UTF8.GetString(bytes);
-
-                        try
-                        {
-                            var flightInfo = JsonConvert.DeserializeObject<NewFlightInfo>(payload);
-
-                            this.PendingFlightInfo.Add(flightInfo);
-
-                            if (this.PendingFlightInfo.Count >= App.ViewModel.ActivePlaneCount)
-                            {
-                                CurrentDelay = 1000;
-
-                                App.ViewModel.UpdateFlightInformation(this.PendingFlightInfo);
-
-                                this.PendingFlightInfo.Clear();
-                            }
-                        }
-                        catch
-                        {
-                        }
-                    }
-                }
-                catch
-                {
-                    
-                }
-
-                await Task.Delay(CurrentDelay);
+                this.PendingFlightInfo.Clear();
+              }
 
             }
+            catch
+            {
+            }
+
+          }
+
+          var secondaryEventData = this.secondaryReceiver.Receive();
+
+          if (secondaryEventData != null)
+          {
+            byte[] bytes = secondaryEventData.GetBytes();
+
+            var payload = Encoding.UTF8.GetString(bytes);
+
+            try
+            {
+              var flightInfo = JsonConvert.DeserializeObject<NewFlightInfo>(payload);
+
+              this.PendingFlightInfo.Add(flightInfo);
+
+              if (this.PendingFlightInfo.Count >= App.ViewModel.ActivePlaneCount)
+              {
+                CurrentDelay = 1000;
+
+                App.ViewModel.UpdateFlightInformation(this.PendingFlightInfo);
+
+                this.PendingFlightInfo.Clear();
+              }
+            }
+            catch
+            {
+            }
+          }
+        }
+        catch
+        {
 
         }
 
+        await Task.Delay(CurrentDelay);
+
+      }
+
     }
+
+  }
 }

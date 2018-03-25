@@ -153,11 +153,15 @@
 
 1. In Visual Studio, open the "**CoreConstants**" file, and paste the "**`NamespaceConnectionString`**" value you copied into the last exercise in for the `SharedEventHubEndpoint` variable value.
 
+1. Set the debug target in Visual Studio to "**x86**" and "**Local Machine**"
+
+    ![x86 Local Machine Debug Target](images/debug-x86-localmachine.png)
+
 1. Run the app and keep it on the event screen so attendees can verify their plane is appearing on it.
     
 ## Update the Zoom Level Visibility
 
-If you want plane metadata (name, direction) to be visible when you are zoomed out further, you can modify line 165 in the "`MainViewModel.cs`" file. Change the "90" to a larger value if you want to see metadata when you are zoomed out more. 
+If you want plane metadata (name, direction) to be visible when you are zoomed out further, you can modify line 165 in the "`MainViewModel.cs`" file. Change the **`90`** to a larger value if you want to see metadata when you are zoomed out more.   I'd recommend a much larger value, like **`1100`** or so.
 
   ```c#
   plane.ZoomDeepLevel = (value < 90) ? Visibility.Visible : Visibility.Collapsed;
