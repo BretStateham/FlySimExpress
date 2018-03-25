@@ -37,7 +37,7 @@ module.exports = function (context, inputMessage) {
             // and log the results for debugging purpose
             last = {
               deviceId: ((result.deviceId._ === null) ? "" : result.deviceId._),
-              time: ((result.time._ === null) ? (new Date()).toISOString() : new Date(result.time._)),
+              timestamp: ((result.timestamp._ === null) ? (new Date()).toISOString() : new Date(result.timestamp._)),
               airspeed: ((result.airspeed._ === null) ? 0 : parseFloat(result.airspeed._)),
               heading: ((result.heading._ === null) ? 0 : parseFloat(result.heading._)),
               altitude: ((result.altitude._ === null) ? 0 : parseFloat(result.altitude._)),
@@ -72,8 +72,8 @@ module.exports = function (context, inputMessage) {
 
           last = {
             deviceId: '',
-            time: (new Date()).toISOString(),
-            airspeed: 384,   // airspeed is fixed at 384. You chould cheat and set this higher to go faster
+            timestamp: (new Date()).toISOString(),
+            airspeed: 1000,   // airspeed is fixed at 384. You chould cheat and set this higher to go faster
             heading: seed % 360,
             altitude: 10000.0 + ((seed % 25) * 1000),
             latitude: 36.7 + (((seed / 100) % 100) / 100.0),
@@ -91,14 +91,14 @@ module.exports = function (context, inputMessage) {
         // Ok, figure out how much time in milliseconds has elapsed between
         // the input message's time, and the last known state's time
         var thisTime = Date.parse(inputMessage.timestamp);
-        var lastTime = Date.parse(last.time);
+        var lastTime = Date.parse(last.timestamp);
         var milliseconds = thisTime.valueOf() - lastTime.valueOf();
 
         // persist the deviceId from the inputMessage
         last.deviceId = inputMessage.deviceId;
 
         // Set the last time to the new inputMessages time
-        last.time = inputMessage.timestamp;
+        last.timestamp = inputMessage.timestamp;
 
         // Compute new heading assuming hard left or right turns 10 degrees per second
         var delta = (milliseconds / 100.0) * (last.roll / 30.0);
@@ -148,7 +148,7 @@ module.exports = function (context, inputMessage) {
           PartitionKey: partitionKey,
           RowKey: rowKey,
           deviceId: last.deviceId,
-          time: last.time,
+          timestamp: last.timestamp,
           airspeed: last.airspeed,
           heading: last.heading,
           altitude: last.altitude,
