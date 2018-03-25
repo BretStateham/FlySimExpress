@@ -73,7 +73,7 @@ module.exports = function (context, inputMessage) {
           last = {
             deviceId: '',
             timestamp: (new Date()).toISOString(),
-            airspeed: 1000,   // airspeed is fixed at 384. You chould cheat and set this higher to go faster
+            airspeed: 384,   // airspeed is fixed at 384. You chould cheat and set this higher to go faster
             heading: seed % 360,
             altitude: 10000.0 + ((seed % 25) * 1000),
             latitude: 36.7 + (((seed / 100) % 100) / 100.0),
