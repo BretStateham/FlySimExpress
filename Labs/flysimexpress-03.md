@@ -113,7 +113,7 @@ A simple way to deploy your code using git source control is to just provision a
     ```bash
     az functionapp deployment source config-local-git -g flysimjqdgroup -n flysimjqdfunctions
     ```
-1. In the output from the prevoius statement, make sure to copy the **`"url"`** value for use in the next exercise:
+1. In the output from the previous statement, make sure to copy the **`"url"`** value for use in the next exercise:
 
     ```bash
     {
@@ -236,7 +236,7 @@ Great, so you've deployed your function to Azure, we've talked about what it doe
 
 
 
-1. To make your code more readable, and possibly be able to edit it, open the Location the "**`FlySimFunctions`**" folder under the folder where you extracted the workshop contents to, and open it with Visual Studio Code. Navigate to the "**`FlySimIotData/index.js`**" file and click on it to view it.
+1. To make your code more readable, and possibly be able to edit it, open the location the "**`FlySimFunctions`**" folder under the folder where you extracted the workshop contents to, and open it with Visual Studio Code. Navigate to the "**`FlySimIotData/index.js`**" file and click on it to view it.
 
     ![Function Code open in Visual Studio Code](images/functioninvscode.png)
 
