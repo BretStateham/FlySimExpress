@@ -5,15 +5,15 @@ The team behind the Azure IoT Developer Kit MXChip board works tirelessly to hel
   - Updated firmware for the board itself
   - Updated Development Kit which includes the tools necessary to create and deploy code onto the board. 
 
-In this exercise, you'll walk through the steps necessary to upgrade the fimrware on your board to the latest version as well as to download and install the latest version of the Developer Kit.  
+In this exercise, you'll walk through the steps necessary to upgrade the firmware on your board to the latest version as well as to download and install the latest version of the Developer Kit.  
 
 The team keeps the documentation for performing those steps up to date as well, so there isn't much value in repeating it here.  Better to just go to the documentation for the board itself, and complete the steps outlined there. 
 
 So, your task is to:
 
-1. If you are at a live event, check with your event organizers to see if they have a USB stick available with all of the necessary downloads on it.  This will help save tim downloading large files and keep the venue network from becoming congested.  If a drive exists, copy (NOT MOVE) the contents to your laptop, and return the USB stick to the organizers or pass it along to another attendee who needs it!
+1. If you are at a live event, check with your event organizers to see if they have a USB stick available with all of the necessary downloads on it.  This will help save time downloading large files and keep the venue network from becoming congested.  If a drive exists, copy (NOT MOVE) the contents to your laptop, and return the USB stick to the organizers or pass it along to another attendee who needs it!
 
-    > **Note**: If you have access to a USB stick with the necessary files on it at an event, make sure to use the Firmward and DevKit versions on the USB stick rather than downloading them.  That will help ensure that you are using a tested version of the Firmware and DevKit and that you match the rest of the attendees at the event.
+    > **Note**: If you have access to a USB stick with the necessary files on it at an event, make sure to use the Firmware and DevKit versions on the USB stick rather than downloading them.  That will help ensure that you are using a tested version of the Firmware and DevKit and that you match the rest of the attendees at the event.
 
     ![USB Stick](images/usbstick.png)
 
