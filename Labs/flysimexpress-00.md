@@ -66,7 +66,7 @@ In order to successfully complete this workshop as an attendee, you will need:
 
   > **Note**: "***Why no intermediate sign in web page***" you ask?  Well because there is no way for the MXChip board to present the Web UI for you to authenticate it.  You can only give the board standard wifi login credentials (SSID/PWD(PSK)).  Yes, you may be able to connect your COMPUTER to a gated wifi connection where you have a browser to complete the login process, but you can't connect the board to one because the board has no browser, screen, keyboard, mouse, etc.
 
-- An active Azure Subscription that you are willing to use for the resources you will create during the event.  If you delete the resources as instructed at the end of the event, the total cost for the resources shouldn't be more than a few US dolalrs.
+- An active Azure Subscription that you are willing to use for the resources you will create during the event.  If you delete the resources as instructed at the end of the event, the total cost for the resources shouldn't be more than a few US dollars.
 
   If you don't have an active Azure Subscription, or don't want charges billed to your existing subscription, you can create a free trial at [http://azure.com/free](http://azure.com/free). If you have created a free trial previously, you will need to create a new one using a different email address.  The recommended steps for creating a free trial for the event are:
 
