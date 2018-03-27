@@ -84,7 +84,7 @@ Now that the code is deployed to your board, you should be able to see messages 
 
 1. In the <a href="https://portal.azure.com" target="_blank">Azure Portal</a>, search for your ***&lt;name_prefix&gt;iot*** hub, and open it's blade.  Then along the left hand side, click the "**IoT Devices**" link and verify that the "**AZ3166**" device was created:
 
-    > **Note**: the "`cloud-provision`" task you ran in Visual Studio created the device ID for you.  It defaults to creating a device named `AZ3166` if one doesn't already exist in the IoT Hub you select.
+    > **Note**: the "`cloud-provision`" task you ran in Visual Studio Code created the device ID for you.  It defaults to creating a device named `AZ3166` if one doesn't already exist in the IoT Hub you select.
 
     ![AZ3166 Device ID](images/az3166deviceinhub.png)
 
@@ -95,7 +95,7 @@ Now that the code is deployed to your board, you should be able to see messages 
     ![Verify IoT Hub Messages](images/verifyiothubmessages.png)
 
 
-1. Next, open the ***&lt;name_prefix&gt;functions*** Function app, click on the "**FlySimIoTData**" function along the left, and then expand the "**Logs**" pane to view the execution logs of the function.  You will see the logged output each time the function is executed because of message being sent by the device to the IoT Hub.
+1. Next, open the ***&lt;name_prefix&gt;functions*** Function app, click on the "**FlySimIoTData**" function along the left, and then expand the "**Logs**" pane to view the execution logs of the function.  You will see the logged output each time the function is executed because of each message being sent by the device to the IoT Hub.
 
 
     ![Function Log](images/functionlogactivity.png)
