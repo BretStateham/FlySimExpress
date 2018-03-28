@@ -228,17 +228,11 @@ If you want plane metadata (name, direction) to be visible when you are zoomed o
     git push -u origin master
     ```
 
-1. Open the Function App in the portal and update the SharedEventHubConnection Application Setting using the **`sharedInputHubConnectionString`** from the presenter. Make sure the save the change:
+1. Update the SharedEventHubConnection application setting using the **`sharedInputHubConnectionString`** from the presenter:
 
-    ![SharedEventHubConnection Connection String](images/SharedEventHubConnectionSetting.png)
-
-    ![Save Settings](images/saveapplicationsettings.png)
-
-> TIP: If you prefer the CLI, set this app setting using...
-
-```bash
-az functionapp config appsettings set --settings SharedEventHubConnection=<connection_string> -n <name_prefix>functions -g <name_prefix>group
-```
+    ```bash
+    az functionapp config appsettings set --settings SharedEventHubConnection=<connection_string> -n <name_prefix>functions -g <name_prefix>group
+    ```
 
 # 04 - Deploy The Code to your Device and "Fly"
 
